@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Главная</title>
+		<link rel="shortcut icon" type="image/x-icon" href="/resource?path=commons%2Fimg%2Ffavicon.ico">
+		<link rel="stylesheet" href="/resource?path=commons%2Fcss%2Fnulling_style.css">
+		<link rel="stylesheet" href="/resource?path=commons%2Fcss%2Fheader.css">
+
+		<meta charset="UTF-8">
+	</head>
+	
+	<body>
+		<th:block  th:insert="~{commons/header :: copy}"></th:block>
+
+		<main class="container">
+
+			<tr th:each="product : ${products}">
+				<div>
+					<div th:text="${product.id}"></div>
+					<div th:text="${product.name}"></div>
+					<div th:text="${product.description}"></div>
+					<div th:each="price : ${product.optPrices}">
+						<div th:text="${price.money}"></div>
+						<div th:text="${price.penny}"></div>
+					</div>
+				</div>
+			</tr>
+
+		</main>
+
+		<th:block  th:insert="~{commons/footer :: copy}"></th:block>
+
+	</body>
+</html>

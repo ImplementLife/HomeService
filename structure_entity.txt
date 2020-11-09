@@ -1,0 +1,65 @@
+tables : {
+
+    products : {
+        id, categoryId, name, description, isPublic,
+
+        info : (JSON) {
+            "images" : [ name1, name2, ...];
+            "optPrices" : [{"count", "money", "penny"}, ...];
+            ...
+        }
+    }
+
+    categories : { id, parentId, name, info : (JSON) { "image", "info_text" }; }
+
+    users : {
+        id, email, pass,
+        enabled, accountNonLocked,
+
+        favoriteProductsId : (Many to Many),
+        cartProductsId     : (Many to Many);
+    }
+
+    users_roles : { userId, roleId; }
+
+    orders : {
+        id, date, userId, statusId,
+
+        infoJSON : (JSON) {
+            "products" : [
+                "product_$number" : {
+                    "productId" : @id;
+                    "count" : val;
+                    ...
+                }
+            ],
+            "info" : {
+                ...
+            }
+        },
+    }
+
+    order_status : { id, name; }
+    comments     : { id, date, userId, text; }
+    systemLog    : { id, date, text; }
+
+}
+
+pages : {
+
+    "Главная" :                                   { "привилегии доступа" : ALL ROLE; }
+    "Карточка товара" :                           { "привилегии доступа" : ALL ROLE; }
+    "Оформление заказа" :                         { "привилегии доступа" : ALL ROLE; }
+    "Создать товар (заполнить карточку товара)" : { "привилегии доступа" : ADMIN; }
+    "Создать пользователя с привилегией" :        { "привилегии доступа" : ADMIN; }
+    "Управление заказами" :                       { "привилегии доступа" : ADMIN, MANAGER; }
+
+    "Личный кабинет" : {
+        "привилегии доступа" : ALL ROLE;
+        "наполнение" : [
+            "избранные товары"
+            "корзина"
+        ]
+    }
+
+}

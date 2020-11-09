@@ -1,0 +1,37 @@
+.quantity {
+	display: inline-flex;
+	justify-content: flex-start;
+	align-items: center;
+	text-align: center;
+	height: 30px;
+	min-width: 100px;
+}
+.quantity span {
+	border: 1px solid #918f89;
+	cursor: pointer;
+	font-size: 20px;
+	padding: 5px;
+	width: 30px;
+	height: 30px;
+	background-color: #cdd1d4;
+	transition: 200ms background-color;
+}
+.quantity span:hover {
+	background-color: #a7aba8;
+}
+.quantity span:active {
+	background-color: #7a807c;
+}
+.quantity input {
+	border-top: 1px solid #918f89;
+	border-bottom: 1px solid #918f89;
+	
+	min-width: 40px;
+	height: 100%;
+	text-align: center;
+	font-size: 20px;
+	background-color: #e3e3e3;
+}
+
+
+/*==============*/

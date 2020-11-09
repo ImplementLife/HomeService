@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Карточка товара</title>
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<link rel="stylesheet" href="css/nulling_style.css">
+		<link rel="stylesheet" href="css/styles.css">
+
+		<link rel="stylesheet" href="css/header.css">
+		<link rel="stylesheet" href="css/slider.css">
+
+		<link rel="stylesheet" href="css/tab.css">
+		<meta name="viewport" content="width=device-width">
+		<meta charset="UTF-8">
+	</head>
+	
+	<body>
+		<th:block  th:insert="~{commons/header :: copy}"></th:block>
+
+		<main>
+			<div class="container">
+				<div class="main__wraper">
+
+					<div class="main__wraperPath">
+						<div class="path">
+							<a href="https://implementlife.github.io/sites/shop/main/">Главная</a> > 
+							<a href="https://implementlife.github.io/sites/shop/catSearch">Категория</a> > 
+							<span>Набор картинок на космическую тему (название)</span>
+						</div>
+					</div>
+
+					<div class="main__nameProduct"><h1>Набор картинок на космическую тему (название)</h1></div>
+
+					<div class="main__isInStock" false>Нет в наличии (Можно добавить способ связатся)</div>
+
+					<div class="main__wraper_PhotoPrice">
+
+						<div class="main__wraperPhoto">
+							<div class="sim-slider">
+								<ul class="sim-slider-list">
+									<li><img src="http://pvbk.spb.ru/inc/slider/imgs/no-image.gif" alt="screen"></li> <!-- это экран -->
+									<li class="sim-slider-element"><img src="http://pvbk.spb.ru/inc/slider/imgs/planet0.jpg" alt="0"></li>
+									<li class="sim-slider-element"><img src="http://pvbk.spb.ru/inc/slider/imgs/planet1.jpg" alt="1"></li>
+									<li class="sim-slider-element"><img src="http://pvbk.spb.ru/inc/slider/imgs/planet2.jpg" alt="2"></li>
+									<li class="sim-slider-element"><img src="http://pvbk.spb.ru/inc/slider/imgs/planet3.jpg" alt="3"></li>
+									<li class="sim-slider-element"><img src="http://pvbk.spb.ru/inc/slider/imgs/planet4.jpg" alt="4"></li>
+									<li class="sim-slider-element"><img src="http://pvbk.spb.ru/inc/slider/imgs/planet5.jpg" alt="5"></li>
+								</ul>
+								<div class="sim-slider-arrow-left"></div>
+								<div class="sim-slider-arrow-right"></div>
+								<div class="sim-slider-dots"></div>
+							</div>
+						</div>
+
+						<div class="main__wraperPriceInfo">
+							<div class="main__wraperPrices">
+								<span class="main__PriceTitle">Цены:</span>
+								<div class="main__optPrices">
+									<div><span>От 1 шт</span><br> 30 грн</div>
+									<div><span>От 5 шт</span><br> 20 грн</div>
+									<div><span>От 10 шт</span><br> 15 грн</div>
+								</div>
+							</div>
+							
+							<div class="main__wraperPrice_buttons">
+								<div class="main__favoriteWrap">
+									<label class="switch">
+										<input type="checkbox">
+										<span></span>
+									</label>
+									<div idProduct="" class="button">Добавить в корзину</div>
+								</div>
+								<div>
+									<div class="quantity">
+										<span class="minus" id="q_down">-</span>
+										<input type="text" name="quantity" id="quantity_wanted" size="2" value="1">
+										<span class="plus" id="q_up">+</span>
+									</div>
+
+									<div idProduct="" class="button">Купить</div>
+								</div>
+								<div id="fullPrice">30</div>
+							</div>
+						</div>
+
+					</div>
+
+					<div class="main__wraperTabInfo">
+						<div class="tab-frame">
+							
+							<input type="radio" name="tab" id="tab1" checked>
+							<label for="tab1">Описание</label>
+							<input type="radio" name="tab" id="tab4">
+							<label for="tab4">Доставка/Оплата</label>
+							 
+							<div class="tab">
+								Набор картинок на космическую тему
+								<p>
+									Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam minus libero porro laudantium nesciunt, deserunt asperiores, totam odit placeat assumenda explicabo cupiditate iusto, doloribus eum repellendus accusantium autem incidunt molestiae?
+								</p>
+								<p>
+									Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis deleniti ex quos explicabo reprehenderit laboriosam voluptate odit! Inventore eum iusto perferendis ex ad officiis soluta provident. Consequuntur beatae, officia consectetur!
+									Aliquid obcaecati repudiandae ipsam, asperiores, facere aspernatur a perferendis doloremque odit laudantium explicabo blanditiis, nobis, aperiam? Pariatur debitis consequatur doloribus animi praesentium facere in eaque nesciunt aspernatur fugiat accusantium, facilis.
+								</p>
+							</div>
+							<div class="tab">
+								<div>Доставка новой почтой или Укрпочтой</div>
+								<div>Оплата VISA / MASTERCARD</div>
+								<p>Lorem, ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit nulla quidem ut autem deleniti reiciendis laudantium excepturi dignissimos expedita quia ullam, suscipit qui rem dolores omnis, dicta tempore, blanditiis consequuntur.</p>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</main>
+
+		<th:block  th:insert="~{commons/footer :: copy}"></th:block>
+
+		<script type="text/javascript" src="js/shop.js"></script>
+		<script type="text/javascript" src="js/slider.js"></script>
+	</body>
+</html>

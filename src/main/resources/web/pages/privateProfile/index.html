@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Личный кабинет</title>
+   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+   <link rel="stylesheet" href="css/nulling_style.css">
+   <link rel="stylesheet" href="css/header.css">
+   <link rel="stylesheet" href="css/slider.css">
+   <link rel="stylesheet" href="css/tab.css">
+
+   <link rel="stylesheet" href="css/quantity.css">
+
+   <link rel="stylesheet" href="/resource/style/privateProfile">
+   <meta name="viewport" content="width=device-width">
+   <meta charset="UTF-8">
+</head>
+
+<body>
+   <th:block  th:insert="~{commons/header :: copy}"></th:block>
+
+
+   <main>
+      <div class="container">
+
+         <div class="main__wraperPath">
+            <div class="path">
+               <a href="https://implementlife.github.io/sites/shop/main/">Главная</a> >
+               <span>Личный кабинет</span>
+            </div>
+         </div>
+
+         <div class="tabs">
+            <input type="radio" name="tab-btn" id="tab-btn-1" value="" th:checked="${tab != 1}">
+            <label for="tab-btn-1">
+               <img src="img/baseline-favorite_border-24px.svg" alt="">
+               <span>Избранное</span>
+            </label>
+            <input type="radio" name="tab-btn" id="tab-btn-2" value="" th:checked="${tab == 1}">
+            <label for="tab-btn-2">
+               <img src="img/outline-shopping_cart-24px.svg" alt="">
+               <span>Корзина</span>
+            </label>
+
+            <div id="content-1">
+               <div class="products pm">
+
+                  <a href="https://implementlife.github.io/sites/shop/cardProduct/">
+                     <div class="product">
+                        <div>
+                           <div class="img"><img src="http://pvbk.spb.ru/inc/slider/imgs/planet4.jpg" alt="Фото"></div>
+                           <div class="wrap_infoAndFavorite pm">
+                              <div class="info">
+                                 <div class="name">Короткое название</div>
+                                 <div class="isInStock" true>В наличии</div>
+                              </div>
+                              <div class="favoriteWrap">
+                                 <label class="switch">
+                                    <input type="checkbox">
+                                    <span></span>
+                                 </label>
+                              </div>
+                           </div>
+                           <div class="price pm">130 грн <span>100 грн</span></div>
+                        </div>
+                        <div>
+                           <div class="button pm pb to-slider">Добавить в корзину</div>
+                           <div class="button pm pb to-page">Купить без корзины</div>
+                        </div>
+                     </div>
+                  </a>
+
+               </div>
+            </div>
+            <div id="content-2">
+               <div class="cart">
+
+                  <div class="product__cart">
+
+                     <div class="img">
+                        <a href="https://implementlife.github.io/sites/shop/cardProduct/">
+                           <img src="http://pvbk.spb.ru/inc/slider/imgs/planet4.jpg" alt="Фото">
+                        </a>
+                     </div>
+
+                     <div class="info">
+                        <a href="https://implementlife.github.io/sites/shop/cardProduct/">
+                           <div class="name">Короткое название</div>
+                        </a>
+                        <div class="isInStock" true>В наличии</div>
+                        <div class="price">130 грн <span>100 грн</span></div>
+                        <div>Количество</div>
+                        <div class="quantity">
+                           <span  int="quantitySub"   idProduct="1" class="minus">-</span>
+                           <input int="quantityCount" idProduct="1" type="text" name="count" size="2" value="1">
+                           <span  int="quantityAdd"   idProduct="1" class="plus">+</span>
+                        </div>
+
+                        <div><span int="finalPrice" idProduct="1">30</span> грн</div>
+
+                        <div int="eco" idProduct="1" class="optAdd" >
+                           <div class="optCount">
+                              <div>При заказе от <span int="ecoCount" idProduct="1"></span> шт</div>
+                              <div>Экономия      <span int="ecoPrice" idProduct="1"></span> грн</div>
+                           </div>
+                           <span int="buttonAdd" idProduct="1" class="add">Добавить</span>
+                        </div>
+                     </div>
+
+                     <span int="buttonToTrash" idProduct="1" class="to_trash">
+                        <img src="/img/baseline-delete_outline-24px.svg" alt="">
+                     </span>
+
+                  </div>
+
+                  <div class="fullFinalPrice">
+                     <div>Всего сэкономлено: <span int="lastFullEco">0</span> грн</div>
+                     <div>Итого к оплате: <span int="lastFullPrice">0</span> грн</div>
+                     <span int="buttonCreateOrder" class="final button">Оформить</span>
+                  </div>
+
+               </div>
+            </div>
+         </div>
+      </div>
+   </main>
+
+   <th:block  th:insert="~{commons/footer :: copy}"></th:block>
+
+   <script type="text/javascript" src="js/interactiveCart.js"></script>
+</body>
+</html>
