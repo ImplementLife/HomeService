@@ -10,11 +10,8 @@ import org.springframework.ui.Model;
  */
 @Component
 public class HeaderController {
-
-    public HeaderController() {}
-
     public void init(Model model, User currentUser) {
-
+        model.addAttribute("countFavorite", currentUser.getFavoriteProducts().size());
+        model.addAttribute("countCart", currentUser.getCartProducts().size());
     }
-
 }

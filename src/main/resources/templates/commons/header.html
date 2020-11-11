@@ -6,14 +6,14 @@
       <div class="wrapper__headerContent">
 
          <div class="header__logo">
-            <div class="header__logo_imgWrap"><a href="/"><img src="/img/logo.png" alt="'logo'"></a></div>
+            <div class="header__logo_imgWrap"><a href="/"><img src="resource/com/img/logo.png" alt="'logo'"></a></div>
             <div class="header__logo_name">Home-Service</div>
          </div>
 
          <div class="header__findLine">
             <form action="" method="get">
                <input type="text" name="find" placeholder="Поиск">
-               <button type="submit"><img src="/img/outline_search_black_48dp.png" alt="Поиск!"></button>
+               <button type="submit"><img src="resource/com/img/outline_search_black_48dp.png" alt="Поиск!"></button>
             </form>
          </div>
 
@@ -21,25 +21,25 @@
             <a class="header__cancel" href="#"></a>
             <form class="header__popup" action="" method="get">
                <input type="text" name="find" placeholder="Поиск">
-               <button type="submit"><img src="/img/outline_search_black_48dp.png" alt="Поиск!"></button>
+               <button type="submit"><img src="resource/com/img/outline_search_black_48dp.png" alt="Поиск!"></button>
             </form>
          </div>
 
          <div class="header__buttons">
             <div class="header__searchMobile">
                <a href="#popup">
-                  <img src="/img/outline_search_white_48dp.png" alt="Избранное">
+                  <img src="resource/com/img/outline_search_white_48dp.png" alt="Избранное">
                </a>
             </div>
             <div class="header__favorite">
                <a href="/privateProfile?tab=favorite">
-                  <img src="/img/baseline_favorite_border_white_48dp.png" alt="Избранное">
+                  <img src="resource/com/img/baseline_favorite_border_white_48dp.png" alt="Избранное">
                   <div th:text="${countFavorite}" id="countFavorite" class="header__count" th:hidden="${countFavorite <= 1}"></div>
                </a>
             </div>
             <div class="header__basked">
                <a href="/privateProfile?tab=cart">
-                  <img src="/img/outline_shopping_cart_white_48dp.png" alt="Корзина">
+                  <img src="resource/com/img/outline_shopping_cart_white_48dp.png" alt="Корзина">
                   <div th:text="${countCart}" id="countBasked" class="header__count" th:hidden="${countCart < 1}"></div>
                </a>
             </div>

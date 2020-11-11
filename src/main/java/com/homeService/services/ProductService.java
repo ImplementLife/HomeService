@@ -17,11 +17,11 @@ import java.util.*;
  * Во время реализации не забывать про необходимость преобразовывать JSON в объекты
  */
 @Component
-public class ProductServices {
+public class ProductService {
     @Autowired
     ProductDao productDao;
 
-    public ProductServices() {}
+    public ProductService() {}
 
     /*===========      JSON  Images    ==============*/
 

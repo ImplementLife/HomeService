@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -15,12 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+@Component
 public class UserService implements UserDetailsService {
-
-
-    public User getUserById(Long id) {
-        return userDao.getOne(id);
-    }
 
     @PersistenceContext
     private EntityManager em;
@@ -32,9 +29,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDao.findByUsername(username);
-
         if (user == null) throw new UsernameNotFoundException("User not found");
-
         return user;
     }
 
@@ -74,6 +69,5 @@ public class UserService implements UserDetailsService {
         return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
                 .setParameter("paramId", idMin).getResultList();
     }
-
 
 }

@@ -2,6 +2,7 @@ package com.homeService.entity;
 
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "system_log")
@@ -10,9 +11,13 @@ public class Log {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String text;
-    private String date;
+    private Date date;
 
     public Log() {}
+
+    public Log(String text) {
+        this.text = text;
+    }
 
     public Long getId() {
         return id;
@@ -28,10 +33,10 @@ public class Log {
         this.text = text;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 }

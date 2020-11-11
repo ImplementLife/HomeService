@@ -1,12 +1,13 @@
 <!DOCTYPE HTML>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 	<head>
+		<meta charset="UTF-8">
 		<title>Главная</title>
 		<link rel="shortcut icon" type="image/x-icon" href="/resource?path=commons%2Fimg%2Ffavicon.ico">
-		<link rel="stylesheet" href="/resource?path=commons%2Fcss%2Fnulling_style.css">
-		<link rel="stylesheet" href="/resource?path=commons%2Fcss%2Fheader.css">
+		<link rel="stylesheet" href="resource/com/css/nulling_style.css">
 
-		<meta charset="UTF-8">
+		<link rel="stylesheet" href="resource/style/main">
+		<link rel="stylesheet" href="resource/com/css/header.css">
 	</head>
 	
 	<body>
@@ -14,7 +15,7 @@
 
 		<main class="container">
 
-			<tr th:each="product : ${products}">
+			<div th:each="product : ${products}">
 				<div>
 					<div th:text="${product.id}"></div>
 					<div th:text="${product.name}"></div>
@@ -24,11 +25,14 @@
 						<div th:text="${price.penny}"></div>
 					</div>
 				</div>
-			</tr>
+			</div>
+			<img href="favicon.ico" alt="ff">
+			<img href="/favicon.ico" alt="ff">
+			<img src="favicon.ico" alt="ff">
+			<img src="/favicon.ico" alt="ff">
 
 		</main>
 
 		<th:block  th:insert="~{commons/footer :: copy}"></th:block>
-
 	</body>
 </html>

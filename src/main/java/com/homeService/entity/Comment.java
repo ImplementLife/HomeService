@@ -1,6 +1,7 @@
 package com.homeService.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "comments")
@@ -10,7 +11,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String date;
+    private Date date;
     private Long userId;
     private String text;
 
@@ -23,10 +24,10 @@ public class Comment {
         this.id = id;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

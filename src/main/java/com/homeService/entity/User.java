@@ -14,8 +14,14 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String email;
+    /**
+     * Вместо username используется email
+     */
+    private String username;
+    private String name;
     private String password;
+    @Transient
+    private String passwordConfirm;
     private boolean enabled;
     private boolean accountNonLocked;
 
@@ -41,11 +47,11 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public String getEmail() {
-        return email;
+    public String getName() {
+        return name;
     }
-    public void setEmail(String email) {
-        this.email = email;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setPassword(String password) {
@@ -80,6 +86,17 @@ public class User implements UserDetails {
         this.cartProducts = cartProducts;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPasswordConfirm() {
+        return passwordConfirm;
+    }
+    public void setPasswordConfirm(String passwordConfirm) {
+        this.passwordConfirm = passwordConfirm;
+    }
+
     /*===================================*/
 
     @Override
@@ -94,7 +111,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return username;
     }
 
     @Override

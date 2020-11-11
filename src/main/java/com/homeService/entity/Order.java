@@ -1,6 +1,8 @@
 package com.homeService.entity;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.TreeSet;
 
 @Entity
 @Table(name = "orders")
@@ -9,24 +11,19 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String date;
+    private Date date;
     private Long userId;
     private Long statusId;
 
     /**
-     *
-     * example : {
-     *             "products" : [
-     *                 "product_$number" : {
-     *                     "productId" : @id;
-     *                     "count" : val;
-     *                     ...
-     *                 }
-     *             ],
-     *             "info" : {...}
-     *         }
+     * example : {"products" : [{"productId", "count"}],
+     * "info",
+     * }
      */
     private String infoJSON;
+
+    @Transient
+    private TreeSet<OrderDetails> orderDetails;
 
     public Order() {}
 
@@ -37,10 +34,10 @@ public class Order {
         this.id = id;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -64,4 +61,13 @@ public class Order {
     public void setInfoJSON(String infoJSON) {
         this.infoJSON = infoJSON;
     }
+
+    public TreeSet<OrderDetails> getOrderDetails() {
+        return orderDetails;
+    }
+    public void setOrderDetails(TreeSet<OrderDetails> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
+
+
 }
