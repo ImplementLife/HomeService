@@ -1,4 +1,4 @@
-package com.homeService.controllers;
+package com.homeService.controllers.common;
 
 import com.homeService.entity.User;
 import org.springframework.stereotype.Component;

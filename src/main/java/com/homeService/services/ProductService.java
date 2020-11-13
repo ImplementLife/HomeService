@@ -2,8 +2,6 @@ package com.homeService.services;
 
 import com.homeService.dao.ProductDao;
 import com.homeService.entity.Product;
-import com.homeService.entity.prices.OptPrice;
-import com.homeService.entity.prices.Price;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -25,6 +23,17 @@ public class ProductService {
 
     /*===========      JSON  Images    ==============*/
 
+    private JSONObject getJSONObject(String JSON) {
+        JSONObject object;
+        try {
+            object = (JSONObject) new JSONParser().parse(JSON);
+            if (object == null) object = new JSONObject();
+        } catch (Exception e) {
+            object = new JSONObject();
+        }
+        return object;
+    }
+
     /**
      * Возвращает все названия изображений относящихся к данному товару
      *
@@ -32,14 +41,13 @@ public class ProductService {
      * @return
      * @throws ParseException
      */
-    public List<String> getNamesImages(Product product) throws ParseException {
-        JSONParser parser = new JSONParser();
-        JSONObject object = (JSONObject) parser.parse(product.getInfoJSON());
+    public ArrayList<String> getNamesImages(Product product) {
+        JSONObject object = getJSONObject(product.getInfoJSON());
         return (ArrayList) object.get("images");
     }
 
     /**
-     * Заменяет существующие именя изображений относящихся
+     * Заменяет существующие имена изображений относящихся
      * к данному товару на те что будут переданы в коллекции
      *
      * @param product
@@ -47,8 +55,8 @@ public class ProductService {
      * @return
      * @throws ParseException
      */
-    public Product setNamesImages(Product product, List<String> names) throws ParseException {
-        JSONObject object = (JSONObject) new JSONParser().parse(product.getInfoJSON());
+    public Product setNamesImages(Product product, List<String> names) {
+        JSONObject object = getJSONObject(product.getInfoJSON());
         JSONArray array = new JSONArray();
         array.addAll(names);
         object.put("images", array);
@@ -65,8 +73,8 @@ public class ProductService {
      * @return
      * @throws ParseException
      */
-    public Product addNameImage(Product product, String name) throws ParseException {
-        JSONObject object = (JSONObject) new JSONParser().parse(product.getInfoJSON());
+    public Product addNameImage(Product product, String name) {
+        JSONObject object = getJSONObject(product.getInfoJSON());
         JSONArray array = (JSONArray) object.get("images");
         array.add(name);
         object.put("images", array);
@@ -84,17 +92,16 @@ public class ProductService {
      * @throws Exception
      */
     public Product initOptPrices(Product product) throws Exception {
-        TreeMap<Integer, OptPrice> optPrices = new TreeMap<>();
-        JSONObject object = (JSONObject) new JSONParser().parse(product.getInfoJSON());
+        JSONObject object = getJSONObject(product.getInfoJSON());
+        TreeMap<Integer, Product.OptPrice> optPrices = new TreeMap<>();
         JSONArray array = (JSONArray) object.get("optPrices");
         for (Object o : array) {
             JSONObject temp = (JSONObject) o;
-            Integer key = (Integer) temp.get("count");
-            Integer money = (Integer) temp.get("money");
-            Integer penny = (Integer) temp.get("penny");
+            int count = Integer.parseInt(temp.get("count").toString());
+            int money = Integer.parseInt(temp.get("money").toString());
             String currency = (String) temp.get("currency");
-            OptPrice value = new OptPrice(key, new Price(money, penny, currency));
-            optPrices.put(key, value);
+            Product.OptPrice value = new Product.OptPrice(count, money, currency);
+            optPrices.put(count, value);
         }
         product.setOptPrices(optPrices);
         return product;
@@ -106,16 +113,14 @@ public class ProductService {
      *
      * @param product
      * @return
-     * @throws ParseException
      */
-    public Product setOptPrices(Product product) throws ParseException {
-        JSONObject object = (JSONObject) new JSONParser().parse(product.getInfoJSON());
+    public Product setOptPrices(Product product) {
+        JSONObject object = getJSONObject(product.getInfoJSON());
         JSONArray array = new JSONArray();
-        for (OptPrice o : product.getOptPrices().values()) {
+        for (Product.OptPrice o : product.getOptPrices().values()) {
             JSONObject temp = new JSONObject();
             temp.put("count", o.getMinCount());
             temp.put("money", o.getMoney());
-            temp.put("penny", o.getPenny());
             temp.put("currency", o.getCurrency());
             array.add(temp);
         }
@@ -141,14 +146,9 @@ public class ProductService {
         return products;
     }
 
-    public boolean saveProduct(Product product) throws ParseException {
-//        Set<Product> temp = productDao.findAllByName(product.getName());
-//        if (temp != null && !temp.isEmpty()) {
-//            return "Товар с таким именем уже существует, продолжить?";
-//        }
+    public Product saveProduct(Product product) {
         this.setOptPrices(product);
-        productDao.saveAndFlush(product);
-        return true;
+        return productDao.saveAndFlush(product);
     }
 
     public boolean delete(Long id) {

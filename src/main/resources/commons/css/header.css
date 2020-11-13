@@ -7,7 +7,10 @@ header {
 	background-color: #414141;
 	width: 100%;
 }
-
+main {
+    min-height: 100%;
+    margin-top: 60px;
+}
 .wrapper__headerContent div, .wrapper__headerContent, .header__find-line form {
     display: flex;
     flex-direction: row;

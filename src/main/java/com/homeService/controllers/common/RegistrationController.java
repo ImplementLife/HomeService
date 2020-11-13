@@ -1,4 +1,4 @@
-package com.homeService.controllers;
+package com.homeService.controllers.common;
 
 import com.homeService.entity.Log;
 import com.homeService.entity.User;

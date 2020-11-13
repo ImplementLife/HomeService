@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+   <a th:href="/category/ + ${cat.name}" th:fragment="category">
+      <div class="product">
+         <div class="img"><img th:src="/resource/img/ + ${cat.img}" alt="Фото"></div>
+         <div class="name pm" th:text="${cat.name}"></div>
+      </div>
+   </a>
+</body>
+</html>

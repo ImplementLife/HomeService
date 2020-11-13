@@ -1,34 +1,10 @@
-body {
-    font-family: arial;
-    font-size: 16px;
-
-    background-color: #f3f3f3;
-}
-
-.conteiner {
-    max-width: 1220px;
-    margin: 0 auto;
-}
-
-/*=========   main   ==========*/
-
-main {
-    margin-top: 60px;
-    min-height: 100%;
-}
-
-.main__content {
-    padding: 20px;
-}
-.main__wraperPath {font-size: 18px;}
-
+.main__content {padding: 20px;}
+.main__wrapperPath {font-size: 18px;}
+.products a {color: #000;}
 .products {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-gap: 20px;
-}
-.products a {
-	color: #000;
 }
 
 .product {
@@ -44,9 +20,7 @@ main {
 }
 
 .img, .img img {width: 100%;}
-.info {
-    text-align: left;
-}
+.info {text-align: left;}
 .name {
     font-size: 16px;
     font-weight: bold;
@@ -93,11 +67,11 @@ main {
     width: 40px;
     cursor: pointer;
     background-size: 40px;
-    background-image: url('../img/baseline-favorite_border-24px.svg');
+    background-image: url('/resource/com/img/baseline-favorite_border-24px.svg');
     background-position: center;
     background-repeat: no-repeat;
 }
-.switch input:checked + span {background-image: url('../img/baseline-favorite-24px.svg');}
+.switch input:checked + span {background-image: url('/resource/com/img/baseline-favorite-24px.svg');}
 
 /*======================*/
 
@@ -125,17 +99,4 @@ main {
         grid-template-columns: repeat(2, 1fr);
         grid-gap: 10px;
     }
-}
-
-
-
-/*=========   footer   ==========*/
-
-footer {
-    background-color: #313131;
-    color: #f3f3f3;
-}
-.wraper__footerContent {
-    padding: 20px;
-    min-height: 60px;
 }

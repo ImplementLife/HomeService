@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
-   <title>Личный кабинет</title>
-   <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-   <link rel="stylesheet" href="css/nulling_style.css">
-   <link rel="stylesheet" href="css/header.css">
-   <link rel="stylesheet" href="css/slider.css">
-   <link rel="stylesheet" href="css/tab.css">
+   <title>Home-Service - Личный кабинет</title>
+   <th:block th:insert="~{commons/head :: copy}"></th:block>
 
-   <link rel="stylesheet" href="css/quantity.css">
+   <link rel="stylesheet" href="/resource/css/slider.css">
+   <link rel="stylesheet" href="/resource/css/tab.css">
+   <link rel="stylesheet" href="/resource/css/quantity.css">
 
-   <link rel="stylesheet" href="/resource/style/privateProfile">
-   <meta name="viewport" content="width=device-width">
-   <meta charset="UTF-8">
+   <link rel="stylesheet" href="/resource/privateProfile/style.css">
 </head>
 
 <body>
    <th:block  th:insert="~{commons/header :: copy}"></th:block>
-
-
    <main>
       <div class="container">
-
-         <div class="main__wraperPath">
+         <div class="main__wrapperPath">
             <div class="path">
                <a href="https://implementlife.github.io/sites/shop/main/">Главная</a> >
                <span>Личный кабинет</span>
@@ -74,42 +67,43 @@
             <div id="content-2">
                <div class="cart">
 
-                  <div class="product__cart">
-
-                     <div class="img">
-                        <a href="https://implementlife.github.io/sites/shop/cardProduct/">
-                           <img src="http://pvbk.spb.ru/inc/slider/imgs/planet4.jpg" alt="Фото">
-                        </a>
-                     </div>
-
-                     <div class="info">
-                        <a href="https://implementlife.github.io/sites/shop/cardProduct/">
-                           <div class="name">Короткое название</div>
-                        </a>
-                        <div class="isInStock" true>В наличии</div>
-                        <div class="price">130 грн <span>100 грн</span></div>
-                        <div>Количество</div>
-                        <div class="quantity">
-                           <span  int="quantitySub"   idProduct="1" class="minus">-</span>
-                           <input int="quantityCount" idProduct="1" type="text" name="count" size="2" value="1">
-                           <span  int="quantityAdd"   idProduct="1" class="plus">+</span>
+                  <div th:each="product : ${cartProduct}">
+                     <div class="product__cart">
+                        <div class="img">
+                           <a th:href="/cardProduct/ + ${product.id}">
+                              <img th:src="/resource/img/ + ${product.mainImg}" alt="Фото">
+                           </a>
                         </div>
 
-                        <div><span int="finalPrice" idProduct="1">30</span> грн</div>
-
-                        <div int="eco" idProduct="1" class="optAdd" >
-                           <div class="optCount">
-                              <div>При заказе от <span int="ecoCount" idProduct="1"></span> шт</div>
-                              <div>Экономия      <span int="ecoPrice" idProduct="1"></span> грн</div>
+                        <div class="info">
+                           <a th:href="/cardProduct/ + ${product.id}">
+                              <div class="name" th:text="${product.name}"></div>
+                           </a>
+                           <div class="isInStock" th:text="${product.status}" th:attr="color=${product.color}"></div>
+                           <div class="price">130 грн</div>
+                           <div>Количество</div>
+                           <div class="quantity">
+                              <span  int="quantitySub"   th:attr="idProduct=${product.id}" class="minus">-</span>
+                              <input int="quantityCount" th:attr="idProduct=${product.id}" type="text" name="count" size="2" value="1">
+                              <span  int="quantityAdd"   th:attr="idProduct=${product.id}" class="plus">+</span>
                            </div>
-                           <span int="buttonAdd" idProduct="1" class="add">Добавить</span>
+
+                           <div><span int="finalPrice" th:attr="idProduct=${product.id}" >30</span> грн</div>
+
+                           <div int="eco" th:attr="idProduct=${product.id}" class="optAdd" >
+                              <div class="optCount">
+                                 <div>При заказе от <span int="ecoCount" th:attr="idProduct=${product.id}"></span> шт</div>
+                                 <div>Экономия      <span int="ecoPrice" th:attr="idProduct=${product.id}"></span> грн</div>
+                              </div>
+                              <span int="buttonAdd" th:attr="idProduct=${product.id}" class="add">Добавить</span>
+                           </div>
                         </div>
+
+                        <span int="buttonToTrash" th:attr="idProduct=${product.id}" class="to_trash">
+                           <img src="/resource/com/img/baseline-delete_outline-24px.svg" alt="">
+                        </span>
+
                      </div>
-
-                     <span int="buttonToTrash" idProduct="1" class="to_trash">
-                        <img src="/img/baseline-delete_outline-24px.svg" alt="">
-                     </span>
-
                   </div>
 
                   <div class="fullFinalPrice">
@@ -117,15 +111,12 @@
                      <div>Итого к оплате: <span int="lastFullPrice">0</span> грн</div>
                      <span int="buttonCreateOrder" class="final button">Оформить</span>
                   </div>
-
                </div>
             </div>
          </div>
       </div>
    </main>
-
    <th:block  th:insert="~{commons/footer :: copy}"></th:block>
-
-   <script type="text/javascript" src="js/interactiveCart.js"></script>
+   <script type="text/javascript" src="/resource/com/js/interactiveCart.js"></script>
 </body>
 </html>

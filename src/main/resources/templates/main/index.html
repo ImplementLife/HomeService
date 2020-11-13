@@ -1,38 +1,53 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<title>Главная</title>
-		<link rel="shortcut icon" type="image/x-icon" href="/resource?path=commons%2Fimg%2Ffavicon.ico">
-		<link rel="stylesheet" href="resource/com/css/nulling_style.css">
+<head>
+   <title>Главная</title>
+   <th:block th:insert="~{commons/head :: copy}"></th:block>
+   <link rel="stylesheet" href="/resource/main/style.css">
+</head>
 
-		<link rel="stylesheet" href="resource/style/main">
-		<link rel="stylesheet" href="resource/com/css/header.css">
-	</head>
-	
-	<body>
-		<th:block  th:insert="~{commons/header :: copy}"></th:block>
+<body>
+   <th:block  th:insert="~{commons/header :: copy}"></th:block>
+   <main>
+      <div class="main__content container">
 
-		<main class="container">
+         <div class="new section">
+            <div class="title"><img src="/resource/com/img/schedule-black-48dp.svg" alt=""><span>Новинки</span></div>
+            <div class="content">
+               <div class="products pm">
+                  <th:block th:each="product : ${newProducts}">
+                     <th:block  th:insert="~{commons/productMin :: product}"></th:block>
+                  </th:block>
+               </div>
+            </div>
+            <div class="watchMore"><a href="/search/new">Смотреть ещё</a></div>
+         </div>
 
-			<div th:each="product : ${products}">
-				<div>
-					<div th:text="${product.id}"></div>
-					<div th:text="${product.name}"></div>
-					<div th:text="${product.description}"></div>
-					<div th:each="price : ${product.optPrices}">
-						<div th:text="${price.money}"></div>
-						<div th:text="${price.penny}"></div>
-					</div>
-				</div>
-			</div>
-			<img href="favicon.ico" alt="ff">
-			<img href="/favicon.ico" alt="ff">
-			<img src="favicon.ico" alt="ff">
-			<img src="/favicon.ico" alt="ff">
+         <div class="popular section">
+            <div class="title"><img src="resource/com/img/grade-black-48dp.svg" alt=""><span>Популярное</span></div>
+            <div class="content">
+               <div class="products pm">
+                  <div th:each="product : ${popularProducts}">
+                     <th:block  th:insert="~{commons/productMin :: product}"></th:block>
+                  </div>
+               </div>
+            </div>
+            <div class="watchMore"><a href="/search/popular">Смотреть ещё</a></div>
+         </div>
 
-		</main>
-
-		<th:block  th:insert="~{commons/footer :: copy}"></th:block>
-	</body>
+         <div class="categories section">
+            <div class="title"><img src="/resource/com/img/list-black-48dp.svg" alt=""><span>Категории</span></div>
+            <div class="content">
+               <div class="products pm">
+                  <div th:each="product : ${popularProducts}">
+                     <th:block  th:insert="~{commons/category :: category}"></th:block>
+                  </div>
+               </div>
+            </div>
+            <div class="watchMore"><a href="/search/categories">Смотреть ещё</a></div>
+         </div>
+      </div>
+   </main>
+   <th:block  th:insert="~{commons/footer :: copy}"></th:block>
+</body>
 </html>

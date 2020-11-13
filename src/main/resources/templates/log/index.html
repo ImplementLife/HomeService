@@ -1,20 +1,20 @@
 <!DOCTYPE HTML>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<meta charset="UTF-8">
-		<title>Log</title>
-		<link rel="shortcut icon" type="image/x-icon" href="/resource?path=commons%2Fimg%2Ffavicon.ico">
-		<link rel="stylesheet" href="resource/com/css/nulling_style.css">
-	</head>
-	
-	<body>
-		<main class="container">
-			<div th:each="log : ${logs}">
-				<div style="border-bottom: 1px solid #000;">
-					<div><span th:text="${log.id}"></span> [<span th:text="${log.date}"></span>]</div>
-					<div th:text="${log.text}"></div>
-				</div>
-			</div>
-		</main>
-	</body>
+<head>
+   <title>Home-Service - System Log</title>
+   <th:block th:insert="~{commons/head :: copy}"></th:block>
+   <link rel="stylesheet" href="/resource/log/style.css">
+</head>
+
+<body>
+   <th:block th:insert="~{commons/header :: copy}"></th:block>
+   <main>
+      <div class="container" th:each="log : ${logs}">
+         <div style="border-bottom: 1px solid #000; padding-bottom:7px;">
+            <span th:text="${log.date}"></span> : [[${log.text}]]
+         </div>
+      </div>
+   </main>
+   <th:block th:insert="~{commons/footer :: copy}"></th:block>
+</body>
 </html>

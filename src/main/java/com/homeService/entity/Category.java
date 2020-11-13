@@ -11,10 +11,7 @@ public class Category {
 
     private Long parentId;
     private String name;
-    /**
-     * example : { "image", "info_text" }
-     */
-    private String infoJSON;
+    private String nameImage;
 
     public Category() {}
 
@@ -39,10 +36,10 @@ public class Category {
         this.name = name;
     }
 
-    public String getInfoJSON() {
-        return infoJSON;
+    public String getNameImage() {
+        return nameImage;
     }
-    public void setInfoJSON(String infoJSON) {
-        this.infoJSON = infoJSON;
+    public void setNameImage(String nameImage) {
+        this.nameImage = nameImage;
     }
 }
