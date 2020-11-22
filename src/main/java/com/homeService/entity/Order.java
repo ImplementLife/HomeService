@@ -1,5 +1,6 @@
 package com.homeService.entity;
 
+import org.hibernate.annotations.Type;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,6 +19,7 @@ public class Order {
     private Date date;
     private Long userId;
     private Long statusId;
+    @Type(type = "text")
     private String userComment;
 
     @Transient

@@ -1,0 +1,34 @@
+/*===== Sections =======*/
+.section {
+	margin-top: 20px;
+	.border: 2px solid #74a1a6;
+	padding: 20px;
+}
+.title {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+.title img {height: 40px;}
+.title span {
+	font-size: 24px;
+	margin-left: 20px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.watchMore {
+	margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.watchMore a {
+	display: block;
+	border: 1px solid #000;
+	padding: 10px 20px;
+	color: #000;
+	font-size: 20px;
+}
+/*======================*/
+@media(max-width: 1300px){.main__content{padding:8px;}}
+@media(max-width: 500px){.section{padding:0;}}

@@ -1,6 +1,8 @@
 package com.homeService.entity;
 
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -10,6 +12,7 @@ public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Type(type = "text")
     private String text;
     private Date date;
 

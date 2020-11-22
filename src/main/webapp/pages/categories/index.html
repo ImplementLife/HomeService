@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Home-Service - Категории</title>
+   <th:block th:insert="~{commons/head :: copy}"></th:block>
+   <link rel="stylesheet" href="/resource/categories/css/styles.css">
+</head>
+
+<body>
+   <th:block th:insert="~{commons/header :: copy}"></th:block>
+   <main>
+      <div class="main__content container">
+         <div class="main__wrapperPath">
+            <div class="path">
+               <a href="/">Главная</a> > <span>Категории</span>
+            </div>
+         </div>
+
+         <div class="products pm">
+            <th:block th:each="cat : ${categories}">
+               <th:block  th:insert="~{commons/category :: category}"></th:block>
+            </th:block>
+         </div>
+      </div>
+   </main>
+   <th:block th:insert="~{commons/footer :: copy}"></th:block>
+</body>
+</html>

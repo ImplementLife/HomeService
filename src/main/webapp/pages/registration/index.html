@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Home-Service - Регистрация</title>
+   <th:block th:insert="~{commons/head :: copy}"></th:block>
+   <link rel="stylesheet" href="resource/registration/css/styles.css">
+</head>
+
+<body>
+   <th:block th:insert="~{commons/header :: copy}"></th:block>
+   <main>
+      <form method="POST" action="/registration">
+         <h2>Регистрация</h2>
+         <div><input type="text" name="login" placeholder="Email" th:value="${username}" autofocus="true"></div>
+         <div><input type="password" name="password" placeholder="Пароль" th:value="${password}"></div>
+         <div><input type="password" name="passwordConfirm" placeholder="Повторите пароль" th:value="${passwordConfirm}"></div>
+         <div th:if="${passwordError != ''}" th:text="${passwordError}"></div>
+         <div th:if="${emailError != ''}"    th:text="${emailError}"></div>
+         <div th:if="${massageError != ''}"  th:text="${massageError}"></div>
+         <button type="submit">Зарегистрироваться</button>
+      </form>
+   </main>
+   <th:block th:insert="~{commons/footer :: copy}"></th:block>
+</body>
+</html>

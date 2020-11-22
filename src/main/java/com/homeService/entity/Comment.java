@@ -1,5 +1,7 @@
 package com.homeService.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -13,6 +15,7 @@ public class Comment {
 
     private Date date;
     private Long userId;
+    @Type(type = "text")
     private String text;
 
     public Comment() {}

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Home-Service - [[${product.name}]]</title>
+	<th:block th:insert="~{commons/head :: copy}"></th:block>
+	<link rel="stylesheet" href="/resources/com/css/slider.css">
+	<link rel="stylesheet" href="/resources/com/css/tab.css">
+	<link rel="stylesheet" href="/resources/com/css/quantity.css">
+
+	<link rel="stylesheet" href="/resource/cardProduct/css/styles.css">
+</head>
+
+<body>
+	<th:block th:insert="~{commons/header :: copy}"></th:block>
+
+	<main>
+		<div class="container">
+			<div class="main__wrapper">
+
+				<div class="main__wrapperPath">
+					<th:block th:insert="~{commons/path :: path}"></th:block>
+				</div>
+
+				<div th:if="${isAdmin}" style="display:flex;justify-content:space-between;background-color:#e16d6d;padding:5px;align-items:center;">
+					<div>Панель управления администратора</div>
+					<form th:action="'/admin/updateProduct/' + ${product.id}" method="post">
+						<span style="white-space:nowrap;">
+							<input name="vis" id="setVisF" type="radio" value="false" th:checked="${!product.isPublic()}">
+							<label for="setVisF">Скрыть</label>
+						</span>
+						<span style="white-space:nowrap;">
+							<input name="vis" id="setVisT" type="radio" value="true" th:checked="${product.isPublic()}">
+							<label for="setVisT">Показать</label>
+						</span>
+						<button type="submit" style="padding:5px;background-color:#cdd396;">Подтвердить</button>
+					</form>
+				</div>
+
+				<div class="main__nameProduct"><h1 th:text="${product.name}"></h1></div>
+				<div class="main__isInStock" th:text="${product.getStatus()}" th:attr="color=${product.getColor()}"></div>
+				<div class="main__wrapper_PhotoPrice">
+
+					<div class="main__wrapperPhoto">
+						<div class="sim-slider">
+							<ul class="sim-slider-list">
+								<li><img src="http://pvbk.spb.ru/inc/slider/imgs/no-image.gif" alt="screen"></li>
+								<th:block th:each="img : ${product.images}">
+									<li class="sim-slider-element"><img th:src="'/ProductImages/' + ${img}" alt="Фото товара"></li>
+								</th:block>
+							</ul>
+							<div class="sim-slider-arrow-left"></div>
+							<div class="sim-slider-arrow-right"></div>
+							<div class="sim-slider-dots"></div>
+						</div>
+					</div>
+
+					<div class="main__wrapperPriceInfo">
+						<div class="main__wrapperPrices">
+							<span class="main__PriceTitle">Цены:</span>
+							<div class="main__optPrices">
+								<th:block th:each="price : ${product.optPrices.values()}">
+									<div>От <span th:text="${price.getMinCount()}"></span> шт<br><span th:text="${price.getMoney()}"></span> грн</div>
+								</th:block>
+							</div>
+						</div>
+
+						<div class="main__wrapperPrice_buttons">
+							<div class="main__favoriteWrap">
+								<label class="switch" th:checked="${product.isFavorite()}">
+									<input type="checkbox">
+									<span></span>
+								</label>
+								<div th:attr="idProduct=${product.id}" class="button">Добавить в корзину</div>
+							</div>
+							<div>
+								<div class="quantity">
+									<span  int="quantitySub"   th:attr="idProduct=${product.id}" class="minus">-</span>
+									<input int="quantityCount" th:attr="idProduct=${product.id}" type="text" name="count" size="2" value="1">
+									<span  int="quantityAdd"   th:attr="idProduct=${product.id}" class="plus">+</span>
+								</div>
+
+								<div th:attr="idProduct=${product.id}" class="button">Купить без корзины</div>
+							</div>
+							<div><span int="finalPrice" th:attr="idProduct=${product.id}" id="fullPrice" th:text="${product.singlePrice.money}"></span> грн</div>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="main__wrapperTabInfo">
+					<div class="tabs">
+						<input type="radio" name="tab-btn" id="tab-btn-1" value="" checked>
+						<label for="tab-btn-1">
+							<span>Описание</span>
+						</label>
+						<input type="radio" name="tab-btn" id="tab-btn-2" value="">
+						<label for="tab-btn-2">
+							<span>Характеристики</span>
+						</label>
+
+						<div id="content-1">
+							[(${product.description})]
+						</div>
+						<div id="content-2">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<th:block th:insert="~{commons/footer :: copy}"></th:block>
+	<script type="text/javascript" src="/resources/com/js/interactiveCart.js"></script>
+	<script type="text/javascript" src="/resources/com/js/slider.js"></script>
+</body>
+</html>

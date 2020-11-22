@@ -1,0 +1,110 @@
+p {margin: 10px 0;}
+/*=========   main   ==========*/
+main {
+	padding: 10px;
+	min-height: 100%;
+}
+
+h1 {
+	font-weight: bold;
+	color: #3f4754;
+	font-size: 30px;
+}
+.main__wrapper_PhotoPrice {
+	display: flex;
+	justify-content: space-between;
+}
+.main__wrapperPriceInfo {
+	width: 34%;
+} 
+.main__wrapperPhoto {
+	width: 64%;
+}
+@media(max-width: 500px) {
+	main {
+		margin-top: 50px;
+	}
+	.main__wrapper_PhotoPrice {
+		display: block;
+	}
+	.main__wrapperPriceInfo, .main__wrapperPhoto {
+		width: 100%;
+	}
+}
+
+.main__isInStock[true] {color: #b09b00;}
+.main__isInStock[false] {color: #a6113b;}
+.plus, .minus {cursor: pointer;}
+
+.button	{
+	cursor: pointer;
+	display: block;
+	padding: 10px;
+	border: 2px solid #000; 
+	white-space: nowrap;
+}
+
+.button:hover {background-color: #9c9c9c;}
+.button:active {background-color: #808080;}
+
+.main__wrapperPrice_buttons > div {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 20px;
+}
+
+/*===   favorite   ===*/
+.switch {display: block;}
+.switch input {display:none;}
+.switch span {
+	display: block;
+	height: 40px;
+	width: 40px;
+	cursor: pointer;
+	background-image: url('/resources/com/img/baseline-favorite_border-24px.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.switch input:checked + span {background-image: url('/resources/com/img/baseline-favorite-24px.svg');}
+/*=====================*/
+
+.quantity {
+	text-align: center;
+	font-size: 20px;
+}
+
+.quantity span {padding: 5px;}
+
+.main__wrapperPriceInfo {padding: 10px 0;}
+.main__wrapper > div {margin-top: 15px;}
+.main__wrapperPath {font-size: 18px;}
+
+.main__optPrices {
+	display: flex
+	justify-content: center
+	white-space: nowrap;
+}
+
+.main__wrapperPrices span {font-weight: bold;}
+
+.main__optPrices div {
+	display: inline-block;
+	line-height: 20px;
+	border: 1px solid #000;
+	background-color: #fff;
+	margin: 5px 10px 5px 0;
+	padding: 5px 20px;
+	text-align: center;
+}
+.main__PriceTitle {font-size: 24px;}
+/*=========   footer   ==========*/
+
+footer {
+	background-color: #313131;
+	color: #f3f3f3;
+}
+.wrapper__footerContent {
+	padding: 20px;
+	min-height: 60px;
+}

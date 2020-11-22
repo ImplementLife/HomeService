@@ -1,0 +1,10 @@
+.cen {
+    display: block;
+    margin: 10px auto;
+    text-align: center;
+}
+.pad, input, select{padding:10px;}
+.button {
+	border: #555555 solid 1px;
+	padding: 10px;
+}

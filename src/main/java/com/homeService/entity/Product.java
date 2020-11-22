@@ -1,5 +1,7 @@
 package com.homeService.entity;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Set;
@@ -14,9 +16,10 @@ public class Product {
 
     private Long categoryId;
     private String name;
+    @Type(type = "text")
     private String description;
     private boolean isPublic;
-    private String countStatus;
+    private int count;
 
     /**
      * example : {
@@ -25,6 +28,7 @@ public class Product {
      *    ...
      * }
      */
+    @Type(type = "text")
     private String infoJSON;
 
     @Transient
@@ -37,6 +41,8 @@ public class Product {
     @Transient
     @ManyToMany(mappedBy = "favoriteProducts")
     private Set<User> favorite;
+    @Transient
+    private boolean isFavorite;
 
     @Transient
     @ManyToMany(mappedBy = "cartProducts")
@@ -95,15 +101,40 @@ public class Product {
         this.optPrices = optPrices;
     }
 
-    public String getCountStatus() {
-        return countStatus;
+    public int getCount() {
+        return count;
     }
-    public void setCountStatus(String countStatus) {
-        this.countStatus = countStatus;
+    public void setCount(int count) {
+        this.count = count;
     }
 
+    public final ArrayList<String> getImages() {
+        if (images != null) return images;
+        return new ArrayList<String>();
+    }
     public void setImages(ArrayList<String> images) {
         this.images = images;
+    }
+
+    public Set<User> getFavorite() {
+        return favorite;
+    }
+    public void setFavorite(Set<User> favorite) {
+        this.favorite = favorite;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public Set<User> getCart() {
+        return cart;
+    }
+    public void setCart(Set<User> cart) {
+        this.cart = cart;
     }
 
     /*===================================*/
@@ -138,17 +169,16 @@ public class Product {
         if (images != null) return images.get(0);
         return "none";
     }
-    public final ArrayList<String> getImages() {
-        if (images != null) return images;
-        return new ArrayList<String>();
-    }
     public final OptPrice getSinglePrice() {
         return optPrices.get(1);
     }
 
     /*================      to override      ===================*/
-    public boolean isFavorite() {
-        return false;
+    public String getColor() {
+        return "green";
+    }
+    public String getStatus() {
+        return "В наличии";
     }
 
 }

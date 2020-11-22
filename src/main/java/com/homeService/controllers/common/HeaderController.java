@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 @Component
 public class HeaderController {
     public void init(Model model, User currentUser) {
+        User cu = currentUser;
         model.addAttribute("countFavorite", currentUser.getFavoriteProducts().size());
         model.addAttribute("countCart", currentUser.getCartProducts().size());
     }

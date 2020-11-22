@@ -12,6 +12,7 @@ public class Category {
     private Long parentId;
     private String name;
     private String nameImage;
+    private boolean isForProduct;
 
     public Category() {}
 
@@ -41,5 +42,12 @@ public class Category {
     }
     public void setNameImage(String nameImage) {
         this.nameImage = nameImage;
+    }
+
+    public boolean isForProduct() {
+        return isForProduct;
+    }
+    public void setForProduct(boolean forProduct) {
+        isForProduct = forProduct;
     }
 }

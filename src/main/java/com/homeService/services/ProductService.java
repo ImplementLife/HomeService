@@ -131,23 +131,45 @@ public class ProductService {
 
     /*===============================================*/
 
+    public Collection<Product> isPublicFilter(Collection<Product> products, boolean isPublic) {
+        Collection<Product> filteredProducts = new ArrayList<>();
+        for (Product product : products) {
+            if (product.isPublic() == isPublic) {
+                filteredProducts.add(product);
+            }
+        }
+        return filteredProducts;
+    }
+
     public Product findProductById(Long id) throws Exception {
         Optional<Product> userFromDb = productDao.findById(id);
         Product product = userFromDb.get();
         this.initOptPrices(product);
+        product.setImages(this.getNamesImages(product));
         return product;
+    }
+
+    public Collection<Product> findAllByCategoryId(Long id) throws Exception {
+        Collection<Product> products = productDao.findAllByCategoryId(id);
+        for (Product p : products) {
+            this.initOptPrices(p);
+            p.setImages(this.getNamesImages(p));
+        }
+        return products;
     }
 
     public Collection<Product> allProducts() throws Exception {
         Collection<Product> products = productDao.findAll();
         for (Product p : products) {
             this.initOptPrices(p);
+            p.setImages(this.getNamesImages(p));
         }
         return products;
     }
 
     public Product saveProduct(Product product) {
         this.setOptPrices(product);
+        this.setNamesImages(product, product.getImages());
         return productDao.saveAndFlush(product);
     }
 
