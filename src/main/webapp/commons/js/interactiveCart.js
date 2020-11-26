@@ -1,17 +1,66 @@
 /* Работа с количеством товаров и ценами */
 const aInt = 'int';
 const aId = 'idProduct';
+var cart = new Storage('countCart');
+var favorite = new Storage('countFavorite');
 
 //   Короче ООП (Ну почти)
-var Product=function() {}
+var Product = function() {this.vars = {};}
 //id, quantitySub, quantityCount, quantityAdd, finalPrice, eco, ecoCount, ecoPrice, buttonAdd, buttonToTrash;
-Product.prototype.setId=function(id) {return this.id=id;};
-Product.prototype.getId=function() {return this.id;};
+Product.prototype.addVar=function(name, value) {this.vars[name] = value;}
 Product.prototype.init=function() {
 	var idProduct = this.id;
 	this.quantitySub.addEventListener('click',function(){change(get(idProduct), -1);});
 	this.quantityAdd.addEventListener('click',function(){change(get(idProduct), +1);});
 	this.quantityCount.oninput = function() {changePrice(get(idProduct));};
+
+	try {
+	    var b = this.buttonCart;
+        this.buttonCart.addEventListener('click',function(){
+            let xhr = new XMLHttpRequest();
+            let url;
+            if (Boolean(b.checked)) {
+                cart.add(idProduct);
+                url = '/addToCF?type=cart&productsCart=' + idProduct;
+                document.getElementById('cartText').textContent = 'Убрать из корзины';
+            } else {
+                cart.remove(idProduct);
+                url = '/removeFromCF?type=cart&productsCart=' + idProduct;
+                document.getElementById('cartText').textContent = 'Добавить в корзину';
+            }
+            console.log('cart: ' + cart.getAll());
+            try {
+                xhr.open("GET", url);
+                xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                xhr.onload = function() {console.log(xhr.response);};
+                xhr.onerror = function() {console.log(`Ошибка соединения`);};
+                xhr.send();
+            } catch (e) {console.log(e);}
+        });
+	} catch(e) {console.log(e);}
+
+	try {
+	    var bf = this.buttonFavorite;
+        this.buttonFavorite.addEventListener('click',function(){
+            let xhr = new XMLHttpRequest();
+            let url;
+            if (Boolean(bf.checked)) {
+                favorite.add(idProduct);
+                url = '/addToCF?type=favorite&productsCart=' + idProduct;
+            } else {
+                favorite.remove(idProduct);
+                url = '/removeFromCF?type=favorite&productsCart=' + idProduct;
+            }
+            console.log('fav: ' + favorite.getAll());
+            try {
+                xhr.open("GET", url);
+                xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                xhr.onload = function() {console.log(xhr.response);};
+                xhr.onerror = function() {console.log(`Ошибка соединения`);};
+                xhr.send();
+            } catch (e) {console.log(e);}
+        });
+	} catch(e) {console.log(e);}
 };
 
 /*  Основное  */
@@ -28,6 +77,7 @@ function changePrice(product) {
 	    }
 	}
 	finalPrice.textContent = finalPriceValue;
+	changeFinalPrice();
 };
 function change(product, value) {
 	var input = product.quantityCount;
@@ -36,9 +86,19 @@ function change(product, value) {
 		changePrice(product);
 	}
 };
-/*  Блок начала  */
+function changeFinalPrice() {
+    let fin = 0;
+    for (var i = 0; i < allProducts.length; i++) {
+        try {
+            fin += Number(allProducts[i].finalPrice.textContent);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    document.getElementById("lastFullPrice").textContent = fin;
+}
 
-var Con = function() {}
+/*  Блок начала  */
 var allProducts = [];
 
 var lastFullEco;
@@ -46,9 +106,24 @@ var lastFullPrice;
 var buttonCreateOrder;
 
 init();
-
+try {
+buttonCreateOrder.addEventListener('click',function(){
+    let orderInfo = new Array();
+    for (var i = 0; i < allProducts.length; i++) {
+        if (allProducts[i].id != null) {
+            let tempProduct = new Object();
+            tempProduct.id = allProducts[i].id;
+            tempProduct.count = allProducts[i].quantityCount.value;
+            orderInfo.push(tempProduct);
+        }
+    }
+    console.log(JSON.stringify(orderInfo));
+    document.getElementById('productsJSON').value = JSON.stringify(orderInfo);
+    document.getElementById('submitButton').click();
+});
+} catch(e){}
 function contains(id) {
-	let result = new Con();
+	let result = new Object();
 	result.isCon=false;
 	for (var i = 0; i < allProducts.length; i++) {
 		if (allProducts[i].id == id) {
@@ -58,7 +133,6 @@ function contains(id) {
 	}
 	return result;
 }
-
 function init() {
 	let all = document.querySelectorAll('*[int]');
 	for (var i = 0; i < all.length; i++) {
@@ -83,24 +157,29 @@ function init() {
 			case 'buttonAdd': product.buttonAdd = all[i]; break;
 			case 'buttonToTrash': product.buttonToTrash = all[i]; break;
 
+			case 'buttonCart': product.buttonCart = all[i]; break;
+			case 'buttonFavorite': product.buttonFavorite = all[i]; break;
+
 			case 'lastFullEco': lastFullEco = all[i]; break;
 			case 'lastFullPrice': lastFullPrice = all[i]; break;
-			case 'buttonToTrash': buttonCreateOrder = all[i]; break;
+			case 'buttonCreateOrder': buttonCreateOrder = all[i]; break;
 
 			default: console.log('Warning: ' + all[i].getAttribute(aInt)); break;
 		}
 	}
 	for (var i = 0; i < allProducts.length; i++) {
+//	    try {
+//	        temp.buttonCart.setAttribute('checked','');
+//	    } catch(e) {
+//	        console.log(e);
+//	    }
 		try {
 		    let temp = allProducts[i];
 			temp.init();
 				let xhr = new XMLHttpRequest();
                 xhr.open("GET", "/productPrices/" + allProducts[i].id);
                 xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-                xhr.onload = function() {
-                    temp.optPrices = JSON.parse(xhr.response);
-                    console.log(temp.optPrices);
-                };
+                xhr.onload = function() {temp.optPrices = JSON.parse(xhr.response);};
                 xhr.onerror = function() {console.log(`Ошибка соединения`);};
                 xhr.send();
 		} catch (e) {
@@ -109,29 +188,3 @@ function init() {
 	}
 }
 function get(id) {return contains(id).element;}
-
-/*==========*/
-var optPrices;
-function optPricesInit(argument) {
-	optPrices = JSON.parse(argument);
-	console.log(optPrices);
-	for (var i = 0; i < argument.length; i++) {
-		console.log(argument[i]);
-	}
-}
-
-function sendJSON(url, idEl) {
-	let xhr = new XMLHttpRequest();
-	xhr.open("GET", url);
-	xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-
-	xhr.onload = function() {
-		console.log(`Загружено: ${xhr.status} ${xhr.response}`);
-		let el = contains(idEl);
-		el.optPrices = xhr.response;
-		console.log('f')
-	};
-	xhr.onerror = function() {console.log(`Ошибка соединения`);};
-
-	xhr.send();
-}

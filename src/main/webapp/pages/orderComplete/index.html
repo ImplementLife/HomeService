@@ -3,7 +3,10 @@
 <head>
 	<title>Home-Service - Панель администратора</title>
 	<th:block th:insert="~{commons/head :: copy}"></th:block>
-	<link rel="stylesheet" href="/resource/admin/css/styles.css">
+	<link rel="stylesheet" href="/resources/com/css/slider.css">
+	<link rel="stylesheet" href="/resources/com/css/tab.css">
+
+	<link rel="stylesheet" href="/resource/cardProduct/css/styles.css">
 </head>
 
 <body>
@@ -18,18 +21,20 @@
 					</div>
 				</div>
 
-				<div class="links">
+				<div>
 					<div><a href="/admin/createCategory">Создать катекорию</a></div>
 					<div><a href="/admin/createProduct">Заполнить карточку нового товара</a></div>
-					<div><a href="/admin/tableOrders">Таблица заказов</a></div>
-					<div><a href="/admin/getHidden">Скрытые товары</a></div>
+					<div><a href="/admin/log">Таблица заказов</a></div>
 
-<!--					<div><a href="/admin/log">Системные логи</a></div>-->
+
+					<div><a href="/admin/log">Системные логи</a></div>
 				</div>
 				
 			</div>
 		</div>
 	</main>
 	<th:block th:insert="~{commons/footer :: copy}"></th:block>
+	<script type="text/javascript" src="resource/com/js/shop.js"></script>
+	<script type="text/javascript" src="resource/com/js/slider.js"></script>
 </body>
 </html>

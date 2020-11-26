@@ -158,6 +158,15 @@ public class ProductService {
         return products;
     }
 
+    public List<Product> findAllById(Iterable<Long> iterable) throws Exception {
+        List<Product> products = productDao.findAllById(iterable);
+        for (Product p : products) {
+            this.initOptPrices(p);
+            p.setImages(this.getNamesImages(p));
+        }
+        return products;
+    }
+
     public Collection<Product> allProducts() throws Exception {
         Collection<Product> products = productDao.findAll();
         for (Product p : products) {
@@ -181,4 +190,12 @@ public class ProductService {
         return false;
     }
 
+    public Collection<Product> findAllByIsPublic(boolean isPublic) throws Exception {
+        Collection<Product> products = productDao.findAllByIsPublic(isPublic);
+        for (Product p : products) {
+            this.initOptPrices(p);
+            p.setImages(this.getNamesImages(p));
+        }
+        return products;
+    }
 }

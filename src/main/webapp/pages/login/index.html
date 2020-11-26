@@ -12,20 +12,28 @@
    <main>
       <div class="wrapper">
          <form action="/j_spring_security_check" method="post">
-            <h2 class="form-signin-heading">Please sign in</h2>
-            <input type="text" class="form-control" name="j_username" placeholder="Email address" required autofocus>
-            <input type="password" class="form-control" name="j_password" placeholder="Password" required>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Войти</button>
+            <h2 class="form-signin-heading cen">Вход</h2>
+            <div class="material-textfield blue">
+               <input type="text" class="form-control" name="j_username" required autofocus>
+               <label data-content="email">EMAIL</label>
+            </div>
+            <div class="material-textfield red">
+               <input type="password" class="form-control" name="j_password" required>
+               <label data-content="password">PASSWORD</label>
+            </div>
+            <div>
+               <button class="btn cen" type="submit">ВОЙТИ</button>
+            </div>
          </form>
       </div>
-      <div th:if="${param.error}">
+      <div class="cen" th:if="${param.error}">
          <div class="alert alert-danger">
-            Invalid username and password.
+            Логин или пароль не верный.
          </div>
       </div>
-      <div th:if="${param.logout}">
+      <div class="cen" th:if="${param.logout}">
          <div class="alert alert-info">
-            You have been logged out.
+            Вы вышли из аккаунта.
          </div>
       </div>
    </main>

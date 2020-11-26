@@ -4,7 +4,7 @@
     grid-gap: 7px;
 }
 .products a:nth-child(6) {
-    display: none;
+    .display: none;
 }
 .products a {color: #000;}
 

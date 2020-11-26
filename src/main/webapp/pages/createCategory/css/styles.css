@@ -1,8 +1,8 @@
 .cen {
-    display: block;
-    margin: 10px auto;
-    text-align: center;
+    margin-top: 10px;
+
 }
+main {padding-top:20px;}
 .pad, input, select{padding:10px;}
 .button {
 	border: #555555 solid 1px;

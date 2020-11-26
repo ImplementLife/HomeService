@@ -66,20 +66,28 @@
 
 						<div class="main__wrapperPrice_buttons">
 							<div class="main__favoriteWrap">
-								<label class="switch" th:checked="${product.isFavorite()}">
-									<input type="checkbox">
+								<label class="switch">
+									<input type="checkbox" int="buttonFavorite" th:attr="idProduct=${product.id}" th:checked="${product.isFavorite()}">
 									<span></span>
 								</label>
-								<div th:attr="idProduct=${product.id}" class="button">Добавить в корзину</div>
+
+								<label>
+									<input style="display:none;" type="checkbox" int="buttonCart" th:attr="idProduct=${product.id}" th:checked="${product.isInCart()}">
+									<span id="cartText" class="button" th:text="${product.isInCart()} ? 'Убрать из корзины' : 'Добавить в корзину'"></span>
+								</label>
 							</div>
 							<div>
-								<div class="quantity">
-									<span  int="quantitySub"   th:attr="idProduct=${product.id}" class="minus">-</span>
-									<input int="quantityCount" th:attr="idProduct=${product.id}" type="text" name="count" size="2" value="1">
-									<span  int="quantityAdd"   th:attr="idProduct=${product.id}" class="plus">+</span>
-								</div>
+								<form action="/newOrderSingle" method="post">
+									<div class="quantity">
+										<span  int="quantitySub"   th:attr="idProduct=${product.id}" class="minus">-</span>
+										<input int="quantityCount" th:attr="idProduct=${product.id}" type="text" name="count" size="2" value="1">
+										<span  int="quantityAdd"   th:attr="idProduct=${product.id}" class="plus">+</span>
+									</div>
 
-								<div th:attr="idProduct=${product.id}" class="button">Купить без корзины</div>
+									<input name="id" type="text" style="display:none;" th:value="${product.id}">
+									<button class="button" type="submit">Купить без корзины</button>
+								</form>
+								<div th:attr="idProduct=${product.id}"></div>
 							</div>
 							<div><span int="finalPrice" th:attr="idProduct=${product.id}" id="fullPrice" th:text="${product.singlePrice.money}"></span> грн</div>
 						</div>

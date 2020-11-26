@@ -22,13 +22,19 @@
             </div>
          </div>
 
+         <div class="links">
+            <div th:if="${isAdmin}"><a href="/admin">Панель администратора</a></div>
+            <!--         <div th:if="${isManager}"></div>-->
+            <div><a href="/logout">Выйти из аккаунта</a></div>
+         </div>
+
          <div class="tabs">
-            <input type="radio" name="tab-btn" id="tab-btn-1" value="" th:checked="${tab != 1}">
+            <input type="radio" name="tab-btn" id="tab-btn-1" th:checked="${tab == 'favorite'}">
             <label for="tab-btn-1">
                <img src="/resources/com/img/baseline-favorite_border-24px.svg" alt="">
                <span>Избранное</span>
             </label>
-            <input type="radio" name="tab-btn" id="tab-btn-2" value="" th:checked="${tab == 1}">
+            <input type="radio" name="tab-btn" id="tab-btn-2" th:checked="${tab == 'cart'}">
             <label for="tab-btn-2">
                <img src="/resources/com/img/outline-shopping_cart-24px.svg" alt="">
                <span>Корзина</span>
@@ -46,20 +52,20 @@
             <div id="content-2">
                <div class="cart">
 
-                  <div th:each="product : ${cartProduct}">
+                  <div th:each="product : ${cartProducts}">
                      <div class="product__cart">
                         <div class="img">
-                           <a th:href="'/cardProduct/' + ${product.id}">
-                              <img th:src="'/resource/img/' + ${product.mainImg}" alt="Фото">
+                           <a th:href="'/product/' + ${product.id}">
+                              <img th:src="'/ProductImages/' + ${product.mainImg}" alt="Фото">
                            </a>
                         </div>
 
                         <div class="info">
-                           <a th:href="'/cardProduct/' + ${product.id}">
+                           <a th:href="'/product/' + ${product.id}">
                               <div class="name" th:text="${product.name}"></div>
                            </a>
                            <div class="isInStock" th:text="${product.status}" th:attr="color=${product.color}"></div>
-                           <div class="price">130 грн</div>
+
                            <div>Количество</div>
                            <div class="quantity">
                               <span  int="quantitySub"   th:attr="idProduct=${product.id}" class="minus">-</span>
@@ -67,15 +73,15 @@
                               <span  int="quantityAdd"   th:attr="idProduct=${product.id}" class="plus">+</span>
                            </div>
 
-                           <div><span int="finalPrice" th:attr="idProduct=${product.id}" >30</span> грн</div>
+                           <div><span int="finalPrice" th:attr="idProduct=${product.id}">[[${product.singlePrice.money}]]</span> грн</div>
 
-                           <div int="eco" th:attr="idProduct=${product.id}" class="optAdd">
+<!--                           <div int="eco" th:attr="idProduct=${product.id}" class="optAdd">
                               <div class="optCount">
                                  <div>При заказе от <span int="ecoCount" th:attr="idProduct=${product.id}"></span> шт</div>
                                  <div>Экономия      <span int="ecoPrice" th:attr="idProduct=${product.id}"></span> грн</div>
                               </div>
                               <span int="buttonAdd" th:attr="idProduct=${product.id}" class="add">Добавить</span>
-                           </div>
+                           </div>-->
 
                         </div>
 
@@ -87,9 +93,15 @@
                   </div>
 
                   <div class="fullFinalPrice">
-                     <div>Всего сэкономлено: <span int="lastFullEco">0</span> грн</div>
-                     <div>Итого к оплате: <span int="lastFullPrice">0</span> грн</div>
-                     <span int="buttonCreateOrder" class="final button">Оформить</span>
+                     <div th:if="${cartProducts.size() > 0}">
+                        <!--<div>Всего сэкономлено: <span int="lastFullEco">0</span> грн</div>-->
+                        <div>Итого к оплате: <span id="lastFullPrice" int="lastFullPrice">[[${finalPrice}]]</span> грн</div>
+                        <span int="buttonCreateOrder" style="display:inline-block;" class="final button">Оформить</span>
+                        <form style="display:none;" action="/newOrder" method="post">
+                           <input id="productsJSON" type="text" name="productsJSON">
+                           <button id="submitButton" type="submit"></button>
+                        </form>
+                     </div>
                   </div>
 
                </div>

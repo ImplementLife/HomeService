@@ -1,8 +1,13 @@
 package com.homeService.services;
 
 import com.homeService.dao.UserDao;
+import com.homeService.entity.Product;
 import com.homeService.entity.Role;
 import com.homeService.entity.User;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +31,9 @@ public class UserService implements UserDetailsService {
     UserDao userDao;
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
+    
+    @Autowired 
+    ProductService productService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -57,6 +66,15 @@ public class UserService implements UserDetailsService {
         return saveUser(user, new Role(1L, "ROLE_USER"));
     }
 
+    public <S extends User> S save2(S s) {
+        return userDao.save(s);
+    }
+
+    public <S extends User> S save(S s) {
+        return userDao.saveAndFlush(s);
+    }
+
+
     public boolean deleteUser(Long userId) {
         if (userDao.findById(userId).isPresent()) {
             userDao.deleteById(userId);
@@ -70,4 +88,17 @@ public class UserService implements UserDetailsService {
                 .setParameter("paramId", idMin).getResultList();
     }
 
+    public ArrayList<Long> get(String JSON) throws ParseException {
+        ArrayList<Long> res = new ArrayList<>();
+        if (JSON == null || JSON.isEmpty()) return res;
+        JSONArray array = (JSONArray) new JSONParser().parse(JSON);
+        for (Object o : array) res.add(Long.parseLong(o.toString()));
+        return res;
+    }
+    public List<Product> getCartProducts(User user) throws Exception {
+        return productService.findAllById(get(user.getIdProductCartJSON()));
+    }
+    public List<Product> getFavoriteProducts(User user) throws Exception {
+        return productService.findAllById(get(user.getIdProductFavoriteJSON()));
+    }
 }

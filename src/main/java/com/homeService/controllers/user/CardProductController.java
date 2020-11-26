@@ -7,6 +7,7 @@ import com.homeService.entity.User;
 import com.homeService.lib.Path;
 import com.homeService.services.CategoryService;
 import com.homeService.services.ProductService;
+import com.homeService.services.UserService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,8 @@ public class CardProductController {
     @Autowired
     ProductService productService;
     @Autowired
+    UserService userService;
+    @Autowired
     private HeaderController headerController;
     @Autowired
     private CategoryService categoryService;
@@ -47,20 +50,20 @@ public class CardProductController {
 
     @GetMapping("/product/{id}")
     public String get(
-            Model model,
-            Principal principal,
-            @PathVariable("id") String id
+    Model model,
+    Principal principal,
+    @PathVariable("id") String id
     ) throws Exception {
         boolean isAdmin = false;
         User currentUser;
+        Product product = productService.findProductById(Long.parseLong(id));
         if (principal != null) {
             currentUser = (User) ((Authentication) principal).getPrincipal();
             headerController.init(model, currentUser);
-            for (GrantedAuthority GA : currentUser.getAuthorities()) {
-                if (GA.getAuthority().equals("ROLE_ADMIN")) isAdmin = true;
-            }
+            for (GrantedAuthority GA : currentUser.getAuthorities()) if (GA.getAuthority().equals("ROLE_ADMIN")) isAdmin = true;
+            if (userService.getCartProducts(currentUser).contains(product)) product.setInCart(true);
+            if (userService.getFavoriteProducts(currentUser).contains(product)) product.setFavorite(true);
         }
-        Product product = productService.findProductById(Long.parseLong(id));
         List<Category> categories = categoryService.findByIdAndParent(product.getCategoryId());
 
         //Path

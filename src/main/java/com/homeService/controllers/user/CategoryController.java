@@ -1,6 +1,5 @@
 package com.homeService.controllers.user;
 
-import com.homeService.controllers.common.PathController;
 import com.homeService.entity.Category;
 import com.homeService.entity.Product;
 import com.homeService.lib.Path;
@@ -22,6 +21,21 @@ public class CategoryController {
 
     @Autowired
     ProductService productService;
+
+    @GetMapping("/search/new")
+    public String searchNew(Model model) throws Exception {
+        Collection<Product> products = productService.isPublicFilter(productService.allProducts(), true);
+        model.addAttribute("products", products);
+        model.addAttribute("categories", new ArrayList<>());
+        model.addAttribute("title", "Новинки");
+        //Path
+        {
+            ArrayList<Path> path = new ArrayList<>();
+            path.add(new Path(null, "Новинки"));
+            model.addAttribute("path", path);
+        }
+        return "catSearch/index";
+    }
 
     @GetMapping("/search/categories")
     public String getCategories(Model model) {

@@ -9,7 +9,7 @@ import java.util.TreeMap;
 
 @Entity
 @Table(name = "products")
-public class Product {
+public class Product implements Comparable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,23 +30,15 @@ public class Product {
      */
     @Type(type = "text")
     private String infoJSON;
-
+    /*===================================*/
     @Transient
     private TreeMap<Integer, OptPrice> optPrices;
     @Transient
     private ArrayList<String> images;
-
-    /*===================================*/
-
-    @Transient
-    @ManyToMany(mappedBy = "favoriteProducts")
-    private Set<User> favorite;
     @Transient
     private boolean isFavorite;
-
     @Transient
-    @ManyToMany(mappedBy = "cartProducts")
-    private Set<User> cart;
+    private boolean isInCart;
 
     /*===================================*/
 
@@ -116,13 +108,6 @@ public class Product {
         this.images = images;
     }
 
-    public Set<User> getFavorite() {
-        return favorite;
-    }
-    public void setFavorite(Set<User> favorite) {
-        this.favorite = favorite;
-    }
-
     public boolean isFavorite() {
         return isFavorite;
     }
@@ -130,11 +115,25 @@ public class Product {
         isFavorite = favorite;
     }
 
-    public Set<User> getCart() {
-        return cart;
+    public boolean isInCart() {
+        return isInCart;
     }
-    public void setCart(Set<User> cart) {
-        this.cart = cart;
+    public void setInCart(boolean inCart) {
+        isInCart = inCart;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Product product = (Product) o;
+        return (int) (this.id - product.id);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Product) {
+            Product product = (Product) o;
+            return this.id.equals(product.id);
+        } else return false;
     }
 
     /*===================================*/

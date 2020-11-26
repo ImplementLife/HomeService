@@ -17,7 +17,6 @@ public class Order {
     private Long id;
 
     private Date date;
-    private Long userId;
     private Long statusId;
     @Type(type = "text")
     private String userComment;
@@ -28,6 +27,7 @@ public class Order {
     /**
      * example : {"products" : [{"productId", "count"}], commentsId:[...]}
      */
+    @Type(type = "text")
     private String infoJSON;
 
     @Transient
@@ -47,13 +47,6 @@ public class Order {
     }
     public void setDate(Date date) {
         this.date = date;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Long getStatusId() {

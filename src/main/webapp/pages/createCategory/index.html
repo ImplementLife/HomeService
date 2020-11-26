@@ -14,7 +14,11 @@
 
          <form action="/admin/createCategory" enctype="multipart/form-data" method="post">
             <div><input class="cen" type="text" name="name" tabindex="1" placeholder="Название категории" th:value="${name}"></div>
-            <div><input class="cen" type="file" name="image" tabindex="2"></div>
+
+            <div class="cen">
+               <div>Фото для категории:</div>
+               <input type="file" name="image" tabindex="2">
+            </div>
             <div class="setIsPublic">
                <div class="cen">
                   <div>

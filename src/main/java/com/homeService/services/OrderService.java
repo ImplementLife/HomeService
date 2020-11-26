@@ -31,11 +31,9 @@ public class OrderService {
         return order;
     }
 
-    public boolean create(Order order) {
-        if (!order.initInfoJSON()) return false;
+    public void save(Order order) {
         order.setDate(new Date());
         orderDao.save(order);
-        return true;
     }
     public void update() {
 

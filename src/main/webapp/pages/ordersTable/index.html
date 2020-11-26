@@ -9,9 +9,16 @@
 <body>
    <th:block th:insert="~{commons/header :: copy}"></th:block>
    <main>
-      <div class="container" th:each="order : ${orders}">
-         <div style="border-bottom: 1px solid #000; padding-bottom:7px;">
-            <span th:text="${log.date}"></span> : [[${log.text}]]
+      <div class="container">
+         <div style="margin-bottom:40px; margin-top:80px"><a href="/admin">Назад к панели администратора</a></div>
+         <div th:each="order : ${orders}">
+            <div style="border-bottom: 1px solid #000; padding-bottom:7px;">
+               <a th:href="'/admin/tableOrders/' + ${order.id}">
+                  <span>[<span>[[${order.date}]]</span>]</span>
+                  <span th:text="${order.id}"></span>
+                  <span th:text="${order.statusId}"></span>
+               </a>
+            </div>
          </div>
       </div>
    </main>

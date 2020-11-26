@@ -14,6 +14,6 @@ public class LogController {
     @GetMapping("/admin/log")
     public String getLog(Model model) {
         model.addAttribute("logs", logService.findAll());
-        return "log/index";
+        return "adminLog/index";
     }
 }

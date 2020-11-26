@@ -11,7 +11,7 @@ public class TableOrdersController {
     @Autowired
     private OrderService orderService;
 
-    @GetMapping("/manager/tableOrders")
+    @GetMapping("/admin/tableOrders")
     public String getOrders(Model model) {
         model.addAttribute("orders", orderService.findAll());
         return "ordersTable/index";

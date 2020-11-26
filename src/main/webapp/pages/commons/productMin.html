@@ -12,7 +12,7 @@
                </div>
                <div class="favoriteWrap">
                   <label class="switch">
-                     <input type="checkbox" th:checked="${product.isFavorite()}">
+                     <input type="checkbox" int="buttonFavorite" th:attr="idProduct=${product.id}" th:checked="${product.isFavorite()}">
                      <span></span>
                   </label>
                </div>

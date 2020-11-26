@@ -1,5 +1,6 @@
 package com.homeService.entity;
 
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails {
+public class User implements UserDetails, Comparable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,16 +26,21 @@ public class User implements UserDetails {
     private boolean enabled;
     private boolean accountNonLocked;
 
+    /**
+     * example: ["1", "5", ...]
+     */
+    @Type(type = "text")
+    private String idProductCartJSON;
+    /**
+     * example: ["1", "5", ...]
+     */
+    @Type(type = "text")
+    private String idProductFavoriteJSON;
+
     /*===================================*/
 
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Product> favoriteProducts;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Product> cartProducts;
 
     /*===================================*/
 
@@ -72,18 +78,18 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public Set<Product> getFavoriteProducts() {
-        return favoriteProducts;
+    public String getIdProductCartJSON() {
+        return idProductCartJSON;
     }
-    public void setFavoriteProducts(Set<Product> favoriteProducts) {
-        this.favoriteProducts = favoriteProducts;
+    public void setIdProductCartJSON(String idProductCartJSON) {
+        this.idProductCartJSON = idProductCartJSON;
     }
 
-    public Set<Product> getCartProducts() {
-        return cartProducts;
+    public String getIdProductFavoriteJSON() {
+        return idProductFavoriteJSON;
     }
-    public void setCartProducts(Set<Product> cartProducts) {
-        this.cartProducts = cartProducts;
+    public void setIdProductFavoriteJSON(String idProductFavoriteJSON) {
+        this.idProductFavoriteJSON = idProductFavoriteJSON;
     }
 
     public void setUsername(String username) {
@@ -132,5 +138,11 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        User user = (User) o;
+        return (int) (this.id - user.id);
     }
 }

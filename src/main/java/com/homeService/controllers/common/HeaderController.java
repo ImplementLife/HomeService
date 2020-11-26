@@ -1,6 +1,8 @@
 package com.homeService.controllers.common;
 
 import com.homeService.entity.User;
+import com.homeService.services.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
@@ -10,9 +12,10 @@ import org.springframework.ui.Model;
  */
 @Component
 public class HeaderController {
-    public void init(Model model, User currentUser) {
-        User cu = currentUser;
-        model.addAttribute("countFavorite", currentUser.getFavoriteProducts().size());
-        model.addAttribute("countCart", currentUser.getCartProducts().size());
+    @Autowired
+    UserService userService;
+    public void init(Model model, User currentUser) throws Exception {
+        model.addAttribute("countFavorite", userService.getFavoriteProducts(currentUser).size());
+        model.addAttribute("countCart", userService.getCartProducts(currentUser).size());
     }
 }

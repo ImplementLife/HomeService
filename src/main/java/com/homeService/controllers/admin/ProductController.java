@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -28,6 +30,14 @@ public class ProductController {
 
     @Autowired
     FileService fileService;
+
+    @GetMapping("/admin/getHidden")
+    public String getHidden(Model model) throws Exception {
+        Collection<Product> products = new ArrayList<>();
+        products.addAll(productService.findAllByIsPublic(true));
+        model.addAttribute("products", products);
+        return "adminHidden/index";
+    }
 
     @PostMapping("/admin/updateProduct/{id}")
     public String updateProduct(
@@ -61,7 +71,7 @@ public class ProductController {
             @RequestParam("description") String description,
             @RequestParam("categoryId") String categoryId,
             @RequestParam("isPublic") String isPublic,
-            @RequestParam("count_1") String count_1,
+            @RequestParam(value = "count_1", defaultValue = "1") String count_1,
             @RequestParam("price_1") String price_1,
             @RequestParam("count_2") String count_2,
             @RequestParam("price_2") String price_2,
