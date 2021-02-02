@@ -1,0 +1,13 @@
+.mt {margin-top: 10px;}
+.block {
+    padding: 10px;
+    border: 1px solid #6f6da6;
+}
+table {
+    width:100%;
+    text-align:center;
+}
+td {
+    padding: 10px;
+    border: 1px solid #6f6da6;
+}

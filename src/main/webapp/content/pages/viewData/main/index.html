@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Home-Service - Главная</title>
+   <th:block th:insert="~{commons/head :: copy}"></th:block>
+   <link rel="stylesheet" href="/resources/com/css/path.css">
+   <link rel="stylesheet" href="/resources/com/css/productMin.css">
+
+   <link rel="stylesheet" href="/resource/viewData/main/css/styles.css">
+</head>
+
+<body>
+   <th:block th:insert="~{commons/header :: copy}"></th:block>
+   <main>
+      <div class="container">
+         <div class="mainContent">
+            <div class="new section">
+               <div class="title"><img src="/resources/com/img/schedule-black-48dp.svg" alt=""><span>Новинки</span></div>
+               <div class="content">
+                  <div class="products pm">
+                     <th:block th:each="product : ${newProducts}">
+                        <th:block  th:insert="~{commons/productMin :: product}"></th:block>
+                     </th:block>
+                  </div>
+               </div>
+               <div class="watchMore"><a href="/search/new">Смотреть ещё</a></div>
+            </div>
+
+            <!--<div class="categories section">
+               <div class="title"><img src="/resources/com/img/list-black-48dp.svg" alt=""><span>Популярные Категории</span></div>
+               <div class="content">
+                  <div class="products pm" th:each="cat : ${categories}"><th:block  th:insert="~{commons/category :: category}"></th:block></div>
+               </div>
+               <div class="watchMore"><a href="/search/categories">Смотреть ещё</a></div>
+            </div>-->
+         </div>
+      </div>
+   </main>
+   <th:block  th:insert="~{commons/footer :: copy}"></th:block>
+   <script type="text/javascript" src="/resources/com/js/interactiveCart.js"></script>
+</body>
+</html>

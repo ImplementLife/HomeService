@@ -11,7 +11,6 @@ public class DateTime {
 
     public String getCurrentDate() {
         Date date = new Date();
-
         return "";
     }
 

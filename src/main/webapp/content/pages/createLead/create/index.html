@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Home-Service - Новый Заказ</title>
+	<th:block th:insert="~{commons/head :: copy}"></th:block>
+	<link rel="stylesheet" href="/resources/com/css/productMin.css">
+
+	<link rel="stylesheet" href="/resource/createLead/create/css/styles.css">
+</head>
+
+<body>
+	<th:block th:insert="~{commons/header :: copy}"></th:block>
+
+	<main>
+		<div class="container">
+			<div class="mainContent">
+				<div class="wrapper">
+					<div class="block">
+						<div class="blockTitle">Список товаров</div>
+						<div class="blockContent">
+							<th:block th:each="i : ${info}">
+								<div class="prod">
+									<div style="width:50px;height:65px;margin-right:20px;">
+										<img style="object-fit:cover;width:100%;height:100%;" th:src="'/ProductImages/' + ${i.getProduct().getMainImg()}" alt="">
+									</div>
+									<div>
+										<div th:text="${i.product.getName()}"></div>
+										<div><span th:attr="prodId=${i.product.id}">[[${i.count}]]</span> шт</div>
+										<div>[[${i.finalPrice.longValue()}]] грн</div>
+									</div>
+								</div>
+							</th:block>
+							<div class="finalPrice pm">К оплате: [[${finalPrice}]] грн</div>
+						</div>
+					</div>
+
+					<!-- form -->
+					<div class="myForm">
+						<div>
+							<div class="block">
+								<div class="blockTitle">Ваши контактные данные</div>
+								<div class="blockContent" th:if="${auth}">
+									<div><input class="in" name="firstName"  id="firstName"  type="text"  placeholder="Имя"     th:value="${user.firstName}"></div>
+									<div><input class="in" name="lastName"   id="lastName"   type="text"  placeholder="Фамилия" th:value="${user.lastName}"></div>
+									<div><input class="in" name="phone"      id="phone"      type="tel"   placeholder="Телефон" th:value="${user.phone}"></div>
+									<div><input class="in" name="email"      id="email"      type="email" placeholder="Email"   th:value="${user.username}"></div>
+								</div>
+								<div class="blockContent" th:if="${!auth}">
+									<div class="titleAuth">Уже зарегистрированы?</div>
+									<div class="buttonAuth f fJS fAC">
+										<div><a href="/login">Войти в аккаунт</a></div>
+									</div>
+									<div class="titleAuth">Новый пользователь?</div>
+									<div class="buttonAuth f fJS fAC">
+										<div><a href="/registration">Зарегистрироваться</a></div>
+									</div>
+								</div>
+							</div>
+
+							<div class="block delivery__wrapper">
+								<div class="blockTitle">Способ доставки</div>
+								<div class="blockContent">
+									<div class="delivery f fJSB fAC">
+										<div id="deliveryNewPostDiv" class="delBlock">
+											<table>
+												<tr>
+													<td>
+														<input name="delivery" type="radio" value="Новая почта" checked>
+													</td>
+													<td class="delImg">
+														<img src="/resources/com/img/111.jpg" alt="">
+													</td>
+													<td>
+														<div class="delTitle">Новая почта</div>
+													</td>
+												</tr>
+											</table>
+										</div>
+										<div id="deliveryUkrPostDiv" class="delBlock">
+											<table>
+												<tr>
+													<td>
+														<input name="delivery" type="radio" value="УкрПочта">
+													</td>
+													<td class="delImg">
+														<img src="/resources/com/img/115.jpg" alt="">
+													</td>
+													<td>
+														<div class="delTitle">УкрПочта</div>
+													</td>
+												</tr>
+											</table>
+										</div>
+									</div>
+									<div class="deliveryAddress">
+										<div class="deliveryAddressTitle mt">Детали доставки</div>
+										<div class="deliveryAddressContent">
+											<div>
+												<span>Область</span>
+												<input class="in" type="text" name="region">
+											</div>
+											<div id="districtDiv" style="display:none;">
+												<span>Район</span>
+												<input class="in" type="text" name="district">
+											</div>
+											<div>
+												<span>Город</span>
+												<input class="in" type="text" name="city">
+											</div>
+											<div>
+												<span>Отделение</span>
+												<input class="in" type="text" name="postOffice">
+											</div>
+											<div id="findPostOfficeDiv">
+												<span></span>
+												<a class="findPostOffice" target="_blank" href="https://r53478.geo.novaposhta.ua/office/nearest">Найти ближайшее отделение Новой почты</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="block">
+								<div class="blockTitle">Способ оплаты</div>
+								<div class="blockContent">
+									<div>
+										<input id="pay1" name="payMethod" type="radio" value="Оплата при доставке" checked>
+										<label for="pay1">Оплата при доставке</label>
+									</div>
+									<div>
+										<input id="pay2" name="payMethod" type="radio" value="Переводом на карту">
+										<label for="pay2">Переводом на карту</label>
+									</div>
+								</div>
+								<div class="otherPeople blockContent">
+									<input id="otherPeople" type="checkbox">
+									<label for="otherPeople">Получать заказ будет другой человек</label>
+
+									<div class="otherPeopleData">
+										<div class="otherPeopleDataLabel">ФИО получателя</div>
+										<input type="text" id="otherPeopleName"  name="otherPeopleName">
+										<div class="otherPeopleDataLabel">Телефон получателя</div>
+										<input type="text" id="otherPeoplePhone" name="otherPeoplePhone">
+									</div>
+								</div>
+							</div>
+
+							<div class="block">
+								<div class="blockTitle">Коментарий к заказу</div>
+								<div class="blockContent">
+									<div class="prompt f">
+										<div class="promptImg f fAC">
+											<img src="/resources/com/img/notification_important-white-36dp.svg" alt="">
+										</div>
+										<div class="promptContent">
+											<p>При желании, Вы можете оставить комментарий с уточнениями по товару.</p>
+											<p>Для этого указывайте артикул и желаемый цвет либо вид.</p>
+											<p>В случае отсутствия товара указанного в комментарии, с Вами свяжется наш менеджер.</p>
+										</div>
+									</div>
+									<div>
+										<!--maxlength="254"-->
+										<textarea class="in" name="comment" id="comment" cols="30" rows="10" placeholder="Комментарий к заказу"></textarea>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="f fJC mt"><button id="bSubmit">Оформить заказ</button></div>
+						<div none>
+							<form action="/createOrder" method="post">
+								<input id="iSend" type="text" name="body">
+								<button id="bSend" type="submit"></button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<th:block th:insert="~{commons/footer :: copy}"></th:block>
+	<script type="text/javascript" src="resources/com/js/createOrder.js"></script>
+</body>
+</html>

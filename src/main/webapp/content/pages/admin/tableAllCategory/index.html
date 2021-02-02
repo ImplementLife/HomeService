@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Home-Service - Панель администратора</title>
+	<th:block th:insert="~{commons/head :: copy}"></th:block>
+	<link rel="stylesheet" href="/resources/com/js/xhr.js">
+	<link rel="stylesheet" href="/resource/admin/tableAllCategory/css/styles.css">
+</head>
+
+<body>
+	<th:block th:insert="~{commons/header :: copy}"></th:block>
+
+	<main>
+		<div class="container">
+			<div class="mainContent">
+				<table>
+					<tr>
+						<td>id</td>
+						<td>Картинка</td>
+						<td>Назначение</td>
+						<td>Полный путь</td>
+					</tr>
+					<tr th:each="cat : ${categories}">
+						<td>[[${cat.id}]]</td>
+						<td><img th:src="'/ProductImages/' + ${cat.nameImage}" alt="Нет"></td>
+						<td th:text="${cat.isForProduct()} ? 'Для товаров' : 'Для других рубрик'"></td>
+						<td><th:block th:each="p : ${cat.path}"> > [[${p}]]</th:block></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</main>
+	<th:block th:insert="~{commons/footer :: copy}"></th:block>
+</body>
+</html>

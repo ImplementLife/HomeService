@@ -1,143 +1,192 @@
 package com.homeService.controllers.admin;
 
+import com.homeService.controllers.Lib;
+import com.homeService.controllers.common.HeaderController;
 import com.homeService.entity.Category;
 import com.homeService.entity.Product;
 import com.homeService.services.CategoryService;
 import com.homeService.services.FileService;
 import com.homeService.services.ProductService;
+import org.json.simple.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.security.Principal;
 import java.util.List;
-import java.util.TreeMap;
 
 @Controller
+@RequestMapping("/admin")
 public class ProductController {
-    @Autowired
-    CategoryService categoryService;
+    private static final String createProduct = "admin/createProduct/index";
+    private static final String updateProduct = "admin/createProduct/index";
+    private static final String allProductTable = "admin/tableAllProducts/index";
 
-    @Autowired
-    ProductService productService;
+    @Autowired CategoryService categoryService;
+    @Autowired ProductService productService;
+    @Autowired FileService fileService;
+    @Autowired HeaderController headerController;
 
-    @Autowired
-    FileService fileService;
-
-    @GetMapping("/admin/getHidden")
-    public String getHidden(Model model) throws Exception {
-        Collection<Product> products = new ArrayList<>();
-        products.addAll(productService.findAllByIsPublic(true));
-        model.addAttribute("products", products);
-        return "adminHidden/index";
+    @GetMapping("/updateProduct/{id}")
+    public String updateProduct(@PathVariable("id") String id, Model model, Principal principal, HttpServletRequest request) {
+        headerController.init(model, principal);
+        Product product = productService.findById(Long.parseLong(id));
+        model.addAttribute("product", product);
+        model.addAttribute("action", "update");
+        model.addAttribute("referer", new Lib().ref(request));
+        productService.initForUpdate(product, model);
+        getCategories(model);
+        return createProduct;
     }
 
-    @PostMapping("/admin/updateProduct/{id}")
+    @PostMapping("/updateProduct")
     public String updateProduct(
-            @PathVariable("id") String id,
-            @RequestParam("vis") String vis
+        @RequestParam(defaultValue="") String id,
+        @RequestParam(defaultValue="") String name,
+        @RequestParam(defaultValue="") String article,
+        @RequestParam(defaultValue="") String description,
+        @RequestParam(defaultValue="") String categoryId,
+        @RequestParam(defaultValue="") String isPublic,
+
+        @RequestParam(defaultValue="") String characteristics,
+        @RequestParam(defaultValue="") String priceList,
+
+        @RequestParam(defaultValue="") String referer,
+        Model model, Principal principal
     ) {
+        headerController.init(model, principal);
+        Product product = productService.findById(Long.parseLong(id));
+        {
+            product.setName(name);
+            product.setArticle(article);
+            product.setDescription(description);
+            product.setCategoryId(Long.parseLong(categoryId));
+            product.setPublic(isPublic.equals("on"));
+            product.setCharacteristicsJSON(characteristics);
+            product.setPriceListJSON(priceList);
+            getCategories(model);
+        }
+        //Валидация
+        {
+            if (name.isEmpty())        return createProduct;
+            if (categoryId.isEmpty())  return createProduct;
+            if (description.isEmpty()) return createProduct;
+
+            if (characteristics.isEmpty()) return createProduct;
+            else product.setCharacteristicsJSON(characteristics);
+        }
+        //Сохранение данных о товаре
+        Product savedProduct = productService.saveProduct(product);
+        return "redirect:" + referer;
+    }
+
+    @PostMapping("/updateVis/{id}")
+    public String updateVis(@PathVariable String id, @RequestParam String vis, HttpServletRequest request) {
         try {
-            Product product = productService.findProductById(Long.parseLong(id));
+            Product product = productService.findById(Long.parseLong(id));
             product.setPublic(Boolean.parseBoolean(vis));
             productService.saveProduct(product);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "redirect:/product/" + id;
+        } catch (Exception e) { e.printStackTrace(); }
+        return "redirect:" + new Lib().ref(request);
     }
 
-    @GetMapping("/admin/createProduct")
-    public String get(Model model) {
+    @GetMapping("/createProduct")
+    public String getForm(Model model, Principal principal) {
+        headerController.init(model, principal);
         getCategories(model);
-        return "createProduct/index";
+        Product product = new Product();
+        model.addAttribute("action", "create");
+        model.addAttribute("product", product);
+        return createProduct;
     }
 
     private void getCategories(Model model) {
-        List<Category> categories = categoryService.findAll();
-        model.addAttribute("categories", categoryService.filterIsForProduct(categories, true));
+        List<Category> categories = categoryService.findAllByIsForProduct(true);
+        model.addAttribute("categories", categoryService.initPathAll(categories));
     }
 
-    @PostMapping("/admin/createProduct")
+    @PostMapping("/createProduct")
     public String post(
-            @RequestParam("name") String name,
-            @RequestParam("description") String description,
-            @RequestParam("categoryId") String categoryId,
-            @RequestParam("isPublic") String isPublic,
-            @RequestParam(value = "count_1", defaultValue = "1") String count_1,
-            @RequestParam("price_1") String price_1,
-            @RequestParam("count_2") String count_2,
-            @RequestParam("price_2") String price_2,
-            @RequestParam("count_3") String count_3,
-            @RequestParam("price_3") String price_3,
-            @RequestParam("images[]") MultipartFile[] images,
-            Model model
+        @RequestParam(defaultValue="") String name,
+        @RequestParam(defaultValue="") String article,
+        @RequestParam(defaultValue="") String description,
+        @RequestParam(defaultValue="") String categoryId,
+        @RequestParam(defaultValue="") String isPublic,
+
+        @RequestParam("images[]") MultipartFile[] images,
+
+        @RequestParam(defaultValue="") String characteristics,
+        @RequestParam(defaultValue="") String priceList,
+        Model model, Principal principal
     ) {
-        //Перезаполнение формы
+        headerController.init(model, principal);
+        Product product = new Product();
         {
-            model.addAttribute("name", name);
-            model.addAttribute("description", description);
-            model.addAttribute("categoryId", categoryId);
-            model.addAttribute("count_1", count_1);
-            model.addAttribute("price_1", price_1);
-            model.addAttribute("count_2", count_2);
-            model.addAttribute("price_2", price_2);
-            model.addAttribute("count_3", count_3);
-            model.addAttribute("price_3", price_3);
+            product.setName(name);
+            product.setArticle(article);
+            product.setDescription(description);
+            product.setCategoryId(Long.parseLong(categoryId));
+            product.setPublic(isPublic.equals("on"));
+            product.setCharacteristicsJSON(characteristics);
+            product.setPriceListJSON(priceList);
             getCategories(model);
         }
-
-        Product product = new Product();
         //Валидация
         {
-            if (name == null || name.isEmpty()) return "createProduct/index";
-            else product.setName(name);
+            if (name.isEmpty())        return createProduct;
+            if (categoryId.isEmpty())  return createProduct;
+            if (description.isEmpty()) return createProduct;
 
-            if (categoryId == null || categoryId.isEmpty()) return "createProduct/index";
-            else product.setCategoryId(Long.parseLong(categoryId));
-
-            if (description == null || description.isEmpty()) return "createProduct/index";
-            else product.setDescription(description);
+            if (characteristics.isEmpty()) return createProduct;
+            else product.setCharacteristicsJSON(characteristics);
 
             if (images.length == 0) {
                 model.addAttribute("fileError", "Добавте изображений");
-                return "createProduct/index";
+                return createProduct;
             } else {
                 try {
-                    product.setImages(fileService.save(images));
+                    JSONArray array = new JSONArray();
+                    array.addAll(fileService.save(images));
+                    product.setImagesJSON(array.toJSONString());
                 } catch (IOException e) {
                     model.addAttribute("fileError", "Ошибка в одном из файлов: \" " + e.getMessage() + " \"");
-                    return "createProduct/index";
+                    return createProduct;
                 }
-            }
-
-            try {
-                TreeMap<Integer, Product.OptPrice> optPrices = new TreeMap<>();
-                optPrices.put(Integer.parseInt(count_1), new Product.OptPrice(Integer.parseInt(count_1), Integer.parseInt(price_1), "грн"));
-                optPrices.put(Integer.parseInt(count_2), new Product.OptPrice(Integer.parseInt(count_2), Integer.parseInt(price_2), "грн"));
-                optPrices.put(Integer.parseInt(count_3), new Product.OptPrice(Integer.parseInt(count_3), Integer.parseInt(price_3), "грн"));
-                product.setOptPrices(optPrices);
-            } catch (Exception e) {
-                model.addAttribute("priceWrong", "Неправильно заполнена форма оптовых цен");
-                return "createProduct/index";
             }
         }
 
         //Сохранение данных о товаре
-        boolean b = false;
-        if (isPublic.equals("on")) b = true;
-
-        product.setPublic(b);
         Product savedProduct = productService.saveProduct(product);
         return "redirect:/product/" + savedProduct.getId();
     }
 
+    /*======      REST     =======*/
+
+    @GetMapping("/allProducts")
+    public String getAllProducts(Model model, Principal principal) {
+        headerController.init(model, principal);
+        model.addAttribute("products", productService.getAllProducts());
+        model.addAttribute("article", "");
+        return allProductTable;
+    }
+
+    @GetMapping("/searchProductByArticle")
+    public String searchProductByArticle(Model model, Principal principal, @RequestParam String article) {
+        headerController.init(model, principal);
+        model.addAttribute("products", productService.searchByArticle(article));
+        model.addAttribute("article", article);
+        return allProductTable;
+    }
+
+    @GetMapping("/deleteProduct/{id}")
+    public String getDeleteProduct(@PathVariable String id) {
+        productService.delete(Long.parseLong(id));
+        return "redirect: /admin/allProducts";
+    }
 
 }

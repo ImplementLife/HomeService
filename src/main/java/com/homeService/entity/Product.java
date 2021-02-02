@@ -4,58 +4,40 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.TreeMap;
 
 @Entity
 @Table(name = "products")
-public class Product implements Comparable{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Product implements Comparable {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long categoryId;
     private String name;
-    @Type(type = "text")
-    private String description;
+    private String article;
+    private Long categoryId;
     private boolean isPublic;
-    private int count;
 
-    /**
-     * example : {
-     *    "images" : [ name1, name2, ...];
-     *    "optPrices" : [{"count", "money", "currency"}, ...];
-     *    ...
-     * }
-     */
-    @Type(type = "text")
-    private String infoJSON;
-    /*===================================*/
-    @Transient
-    private TreeMap<Integer, OptPrice> optPrices;
-    @Transient
-    private ArrayList<String> images;
-    @Transient
-    private boolean isFavorite;
-    @Transient
-    private boolean isInCart;
+    @Type(type = "text") private String description;
+    @Type(type = "text") private String characteristicsJSON;
+    @Type(type = "text") private String priceListJSON;
+    @Type(type = "text") private String imagesJSON;
 
     /*===================================*/
-
+    @Transient private TreeMap<Integer, Discount> optPrices;
+    @Transient private ArrayList<String> images;
+    @Transient private boolean isFavorite;
+    @Transient private boolean isInCart;
+    @Transient private String defaultPrice;
+    /*===================================*/
     public Product() {}
+
+    /*===   Not @Transient   ===*/
 
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getCategoryId() {
-        return categoryId;
-    }
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
     }
 
     public String getName() {
@@ -65,11 +47,18 @@ public class Product implements Comparable{
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getArticle() {
+        return article;
     }
-    public void setDescription(String description) {
-        this.description = description;
+    public void setArticle(String article) {
+        this.article = article;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public boolean isPublic() {
@@ -79,25 +68,47 @@ public class Product implements Comparable{
         isPublic = aPublic;
     }
 
-    public String getInfoJSON() {
-        return infoJSON;
+    public String getDescription() {
+        return description;
     }
-    public void setInfoJSON(String infoJSON) {
-        this.infoJSON = infoJSON;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public TreeMap<Integer, OptPrice> getOptPrices() {
+    public String getCharacteristicsJSON() {
+        return characteristicsJSON;
+    }
+    public void setCharacteristicsJSON(String characteristicsJSON) {
+        this.characteristicsJSON = characteristicsJSON;
+    }
+
+    public String getPriceListJSON() {
+        return priceListJSON;
+    }
+    public void setPriceListJSON(String priceListJSON) {
+        this.priceListJSON = priceListJSON;
+    }
+
+    public String getImagesJSON() {
+        return imagesJSON;
+    }
+    public void setImagesJSON(String imagesJSON) {
+        this.imagesJSON = imagesJSON;
+    }
+
+    public String getDefaultPrice() {
+        return defaultPrice;
+    }
+    public void setDefaultPrice(String defaultPrice) {
+        this.defaultPrice = defaultPrice;
+    }
+
+    /*===   @Transient   ===*/
+    public TreeMap<Integer, Discount> getOptPrices() {
         return optPrices;
     }
-    public void setOptPrices(TreeMap<Integer, OptPrice> optPrices) {
+    public void setOptPrices(TreeMap<Integer, Discount> optPrices) {
         this.optPrices = optPrices;
-    }
-
-    public int getCount() {
-        return count;
-    }
-    public void setCount(int count) {
-        this.count = count;
     }
 
     public final ArrayList<String> getImages() {
@@ -122,6 +133,7 @@ public class Product implements Comparable{
         isInCart = inCart;
     }
 
+    /*===   |   ===*/
     @Override
     public int compareTo(Object o) {
         Product product = (Product) o;
@@ -137,47 +149,30 @@ public class Product implements Comparable{
     }
 
     /*===================================*/
-    public static class OptPrice {
+    public static class Discount {
         private final int minCount;
-        private final int money;
-        private final String currency;
+        private final int percent;
 
-        public OptPrice(int minCount, int money, String currency) throws Exception {
+        public Discount(int minCount, int money) throws Exception {
             if (minCount < 1) throw new Exception("minCount can have value is >= 1;");
             if (money < 0) throw new Exception("Money diapason: [0 - large], received value in money: " + money + ';');
-            if (currency == null || currency.isEmpty()) throw new Exception("currency not can empty or null");
 
-            this.currency = currency;
             this.minCount = minCount;
-            this.money = money;
+            this.percent = money;
         }
 
         public int getMinCount() {
             return minCount;
         }
-        public int getMoney() {
-            return money;
-        }
-        public String getCurrency() {
-            return currency;
+        public int getPercent() {
+            return percent;
         }
     }
 
-    /*================      other            ===================*/
+    /*================      other       ===================*/
     public final String getMainImg() {
         if (images != null) return images.get(0);
         return "none";
-    }
-    public final OptPrice getSinglePrice() {
-        return optPrices.get(1);
-    }
-
-    /*================      to override      ===================*/
-    public String getColor() {
-        return "green";
-    }
-    public String getStatus() {
-        return "В наличии";
     }
 
 }

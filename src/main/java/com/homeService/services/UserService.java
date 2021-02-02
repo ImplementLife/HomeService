@@ -24,16 +24,10 @@ import java.util.Optional;
 
 @Component
 public class UserService implements UserDetailsService {
-
-    @PersistenceContext
-    private EntityManager em;
-    @Autowired
-    UserDao userDao;
-    @Autowired
-    BCryptPasswordEncoder bCryptPasswordEncoder;
-    
-    @Autowired 
-    ProductService productService;
+    @PersistenceContext private EntityManager em;
+    @Autowired private UserDao userDao;
+    @Autowired private BCryptPasswordEncoder bCryptPasswordEncoder;
+    @Autowired private ProductService productService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -61,19 +55,16 @@ public class UserService implements UserDetailsService {
         userDao.saveAndFlush(user);
         return true;
     }
-
     public boolean saveUser(User user) {
         return saveUser(user, new Role(1L, "ROLE_USER"));
     }
 
-    public <S extends User> S save2(S s) {
+    public User save2(User s) {
         return userDao.save(s);
     }
-
-    public <S extends User> S save(S s) {
+    public User save(User s) {
         return userDao.saveAndFlush(s);
     }
-
 
     public boolean deleteUser(Long userId) {
         if (userDao.findById(userId).isPresent()) {
@@ -87,14 +78,14 @@ public class UserService implements UserDetailsService {
         return em.createQuery("SELECT u FROM User u WHERE u.id > :paramId", User.class)
                 .setParameter("paramId", idMin).getResultList();
     }
-
-    public ArrayList<Long> get(String JSON) throws ParseException {
+    public List<Long> get(String JSON) throws ParseException {
         ArrayList<Long> res = new ArrayList<>();
         if (JSON == null || JSON.isEmpty()) return res;
         JSONArray array = (JSONArray) new JSONParser().parse(JSON);
         for (Object o : array) res.add(Long.parseLong(o.toString()));
         return res;
     }
+
     public List<Product> getCartProducts(User user) throws Exception {
         return productService.findAllById(get(user.getIdProductCartJSON()));
     }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Home-Service - Заказ успешно создан</title>
+	<th:block th:insert="~{commons/head :: copy}"></th:block>
+	<link rel="stylesheet" href="/resources/com/css/slider.css">
+	<link rel="stylesheet" href="/resources/com/css/tab.css">
+
+	<link rel="stylesheet" href="/resource/createLead/complete/css/styles.css">
+</head>
+
+<body>
+	<th:block th:insert="~{commons/header :: copy}"></th:block>
+	<main>
+		<div class="container">
+			<div class="mainContent">
+				<div>Заказ № [[${orderNum}]] успешно создан.<br>
+					В ближайшее время наш менеджер с вами свяжется.<br>
+					<br>
+					<a href="/">Вернуться на главную</a>
+				</div>
+			</div>
+		</div>
+	</main>
+	<th:block th:insert="~{commons/footer :: copy}"></th:block>
+</body>
+</html>

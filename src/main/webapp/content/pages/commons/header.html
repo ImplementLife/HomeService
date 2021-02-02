@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<body>
+<header th:fragment="copy">
+   <div class="container">
+      <input id="menuToggle" type="checkbox">
+      <div class="catMenu">
+         <div class="menuHead">
+
+            <label for="menuToggle" class="f fJE fAC pointer" onclick>
+               <div><img src="/resources/com/img/close-black-36dp.svg" alt="Закрыть меню"></div>
+            </label>
+
+            <div th:unless="${auth}" class="auth"><a href="/login">Вход</a> | <a href="/registration">Регистриция</a></div>
+            <div th:if="${auth}" class="auth"><a href="/logout">Выйти из аккаунта</a></div>
+
+         </div>
+         <div class="menuContent">
+            <div class="catBlock menuContentElement" th:if="${isAdmin}">
+               <details>
+                  <summary class="pointer menuItem">Админ панель</summary>
+                  <div class="detailsContent">
+                     <div class="admin">
+                        <!--<a href="" class="catBlock menuContentElement">Акции и предложения</a>-->
+                        <a href="/admin/allUsers"              class="catBlock menuContentElement">Клиентская база</a>
+                        <a href="/admin/tableOrders?sortId=-2" class="catBlock menuContentElement">Текущие заказы</a>
+                        <a href="/admin/allStatuses"           class="catBlock menuContentElement">Статусы заказов</a>
+                        <a href="/admin/createProduct"         class="catBlock menuContentElement">Добавить предложение</a>
+                        <a href="/admin/allProducts"           class="catBlock menuContentElement">Все предложения</a>
+                        <a href="/admin/createCategory"        class="catBlock menuContentElement">Добавить рубрику</a>
+                        <a href="/admin/allCategories"         class="catBlock menuContentElement">Все рубрики</a>
+                     </div>
+                  </div>
+               </details>
+            </div>
+
+            <div>
+               <th:block th:each="cat : ${allCategories}">
+                  <th:block th:insert="~{commons/header :: detCat}"></th:block>
+               </th:block>
+            </div>
+         </div>
+      </div>
+      <div class="wrapper__headerContent">
+         <div class="header_menu">
+            <label for="menuToggle" class="catMenuToggle pointer" onclick>
+               <img src="/resources/com/img/reorder-white-36dp.svg" alt="Открыть меню">
+            </label>
+         </div>
+
+         <div class="header__logo">
+            <a href="/">
+               <div class="header__logo_imgWrap"><img src="/resources/com/img/logo.png" alt="'logo'"></div>
+               <div class="header__logo_name">Home-Service</div>
+            </a>
+         </div>
+
+         <!--<div class="header__findLine">
+            <form action="" method="get">
+               <input type="text" name="find" placeholder="Поиск">
+               <button type="submit"><img src="/resources/com/img/search_black.svg" alt="Поиск!"></button>
+            </form>
+         </div>-->
+
+         <div class="header__overlay" id="popup">
+            <a class="header__cancel" href="#"></a>
+            <form class="header__popup" action="" method="get">
+               <input type="text" name="find" placeholder="Поиск">
+               <button type="submit"><img src="/resources/com/img/search_black.svg" alt="Поиск!"></button>
+            </form>
+         </div>
+
+         <div class="header__buttons">
+            <!--<div class="header__searchMobile">
+               <a href="#popup">
+                  <img src="/resources/com/img/search-white.svg" alt="Поиск">
+               </a>
+            </div>-->
+            <div class="header__favorite">
+               <a href="javascript: goToPage('favorite');">
+                  <img src="/resources/com/img/favorite_border-white-18dp.svg" alt="Избранное">
+                  <div th:text="${countFavorite}" id="countFavorite" class="header__count" th:hidden="${countFavorite <= 1}"></div>
+               </a>
+            </div>
+            <div class="header__basked">
+               <a href="javascript: goToPage('cart');">
+                  <img src="/resources/com/img/shopping_cart-white-18dp.svg" alt="Корзина">
+                  <div th:text="${countCart}" id="countCart" class="header__count" th:hidden="${countCart < 1}"></div>
+               </a>
+            </div>
+         </div>
+
+      </div>
+   </div>
+   <script type="text/javascript" src="/resources/com/js/storage.js"></script>
+   <script>
+      function goToPage(tab) {
+         var cart = new Storage('countCart');
+         let temp = cart.getAll();
+         var url = '/privateProfile?tab=' + tab + '&productsCart=';
+         for (var i = 0; i < temp.length; i++) url += temp[i] + ' ';
+         var favorite = new Storage('countFavorite');
+         temp = favorite.getAll();
+         url += '&productsFavorite=';
+         for (var i = 0; i < temp.length; i++) url += temp[i] + ' ';
+         document.location.href = url;
+      }
+   </script>
+</header>
+
+<div th:fragment="detCat" class="catBlock menuContentElement">
+   <a th:href="'/search/categories/' + ${cat.id}" th:if="${cat.getDoterCategories().size() == 0}">[[${cat.name}]]</a>
+   <details th:unless="${cat.getDoterCategories().size() == 0}">
+      <summary class="pointer menuItem">[[${cat.name}]]</summary>
+      <div class="detailsContent" th:each="cat : ${cat.getDoterCategories()}">
+         <th:block th:insert="~{commons/header :: detCat}"></th:block>
+      </div>
+   </details>
+</div>
+
+</body>
+</html>
+

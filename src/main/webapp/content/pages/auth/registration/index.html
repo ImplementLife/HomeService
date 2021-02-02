@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Home-Service - Регистрация</title>
+   <th:block th:insert="~{commons/head :: copy}"></th:block>
+   <link rel="stylesheet" href="resource/auth/registration/css/styles.css">
+</head>
+<body>
+   <th:block th:insert="~{commons/header :: copy}"></th:block>
+   <main>
+      <div class="container">
+         <div class="mainContent">
+            <div class="wrapper">
+               <form action="/registration" method="post">
+                  <h2 class="form-signin-heading cen">Регистриция</h2>
+                  <div class="material-textfield blue">
+                     <input type="text" class="form-control" name="login" required autofocus>
+                     <label data-content="email">EMAIL</label>
+                  </div>
+                  <div class="material-textfield blue">
+                     <input type="tel" class="form-control" name="phone" required autofocus>
+                     <label data-content="Телефон">Телефон</label>
+                  </div>
+                  <div class="material-textfield blue">
+                     <input type="tel" class="form-control" name="firstName" required autofocus>
+                     <label data-content="Имя">Имя</label>
+                  </div>
+                  <div class="material-textfield blue">
+                     <input type="tel" class="form-control" name="lastName" required autofocus>
+                     <label data-content="Фамилия">Фамилия</label>
+                  </div>
+                  <div class="material-textfield red">
+                     <input type="password" class="form-control" name="password" required>
+                     <label data-content="Пароль">Пароль</label>
+                  </div>
+                  <div class="material-textfield red">
+                     <input type="password" class="form-control" name="passwordConfirm" required>
+                     <label data-content="Повторите пароль">Повторите пароль</label>
+                  </div>
+                  <div style="display:none"><input type="text" name="referer" th:value="${referer}"></div>
+                  <div><button class="btn cen" type="submit">Зарегистрироваться</button></div>
+               </form>
+            </div>
+            <div class="cen">
+               <div class="alert alert-danger" th:if="${passwordError != ''}" th:text="${passwordError}"></div>
+               <div class="alert alert-danger" th:if="${emailError != ''}"    th:text="${emailError}"></div>
+               <div class="alert alert-danger" th:if="${massageError != ''}"  th:text="${massageError}"></div>
+            </div>
+         </div>
+      </div>
+   </main>
+   <th:block th:insert="~{commons/footer :: copy}"></th:block>
+</body>
+</html>

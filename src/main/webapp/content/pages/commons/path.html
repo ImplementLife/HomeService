@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<body>
+   <div class="path" th:fragment="path">
+      <a href="/">Главная</a> >
+      <th:block th:each="p : ${path}">
+         <span th:if="${p.getURL()}"><a th:href="${p.getURL()}" th:text="${p.getName()}"></a> ></span>
+         <span class="notLink" th:unless="${p.getURL()}" th:text="${p.name}"></span>
+      </th:block>
+   </div>
+</body>
+</html>
+

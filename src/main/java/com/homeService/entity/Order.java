@@ -1,28 +1,21 @@
 package com.homeService.entity;
 
 import org.hibernate.annotations.Type;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 @Entity
 @Table(name = "orders")
 public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Date date;
     private Long statusId;
-    @Type(type = "text")
-    private String userComment;
-
-    @Transient
-    private ArrayList<Comment> idComments;
+    private Long userId;
 
     /**
      * example : {"products" : [{"productId", "count"}], commentsId:[...]}
@@ -30,9 +23,15 @@ public class Order {
     @Type(type = "text")
     private String infoJSON;
 
-    @Transient
-    private ArrayList<OrderDetails> orderDetails;
-
+    @Transient private OrderStatus orderStatus;
+    @Transient private ArrayList<Comment> idComments;
+    @Transient private ArrayList<OrderDetails> orderDetails;
+    @Transient private UserData userData;
+    @Transient private Delivery delivery;
+    @Transient private String payMethod;
+    @Transient private String userComment;
+    @Transient private User user;
+    /*==================================*/
     public Order() {}
 
     public Long getId() {
@@ -40,6 +39,10 @@ public class Order {
     }
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFormattedDate() {
+        return new SimpleDateFormat("[yyyy.MM.dd HH:mm]").format(date);
     }
 
     public Date getDate() {
@@ -56,6 +59,20 @@ public class Order {
         this.statusId = statusId;
     }
 
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public String getUserComment() {
+        return userComment;
+    }
+    public void setUserComment(String userComment) {
+        this.userComment = userComment;
+    }
+
     public String getInfoJSON() {
         return infoJSON;
     }
@@ -70,13 +87,6 @@ public class Order {
         this.orderDetails = orderDetails;
     }
 
-    public String getUserComment() {
-        return userComment;
-    }
-    public void setUserComment(String userComment) {
-        this.userComment = userComment;
-    }
-
     public ArrayList<Comment> getIdComments() {
         return idComments;
     }
@@ -84,38 +94,130 @@ public class Order {
         this.idComments = idComments;
     }
 
-    /*===========             JSON             ==============*/
+    public UserData getUserData() {
+        return userData;
+    }
+    public void setUserData(UserData userData) {
+        this.userData = userData;
+    }
 
+    public Delivery getDelivery() {
+        return delivery;
+    }
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+    }
+
+    public String getPayMethod() {
+        return payMethod;
+    }
+    public void setPayMethod(String payMethod) {
+        this.payMethod = payMethod;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public User getUser() {
+        return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    /*=======================================================*/
+    public static class OrderDetails {
+        private String count;
+        private String productId;
+
+        public OrderDetails() {}
+        public OrderDetails(String count, String productId) {
+            this.count = count;
+            this.productId = productId;
+        }
+
+        public String getCount() {
+            return count;
+        }
+        public void setCount(String count) {
+            this.count = count;
+        }
+
+        public String getProductId() {
+            return productId;
+        }
+        public void setProductId(String productId) {
+            this.productId = productId;
+        }
+    }
+    public static class UserData {
+        private String firstName;
+        private String lastName;
+        private String phone;
+        private String email;
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public void setPhone(String phone) {
+            this.phone = phone;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+    }
+    public static class Delivery {
+        private String method;
+        private String address;
+
+        public String getMethod() {
+            return method;
+        }
+
+        public void setMethod(String method) {
+            this.method = method;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+    }
+
+    /*===========             JSON             ==============
     private JSONObject getJSONObject(String JSON) {
-        try {
-            return (JSONObject) new JSONParser().parse(JSON);
-        } catch (Exception e) {
-            return new JSONObject();
-        }
+        try { return (JSONObject) new JSONParser().parse(JSON);
+        } catch (Exception e) { return new JSONObject(); }
     }
-
-    /**
-     * Метод для инициализации внутреннего объекта "c информацией по заказу" из JSON строки
-     */
-    public void initOrderDetails() {
-        ArrayList<OrderDetails> tempArray = new ArrayList<>();
-        JSONObject object = getJSONObject(infoJSON);
-        JSONArray array = (JSONArray) object.get("orderDetails");
-        if (array == null) return;
-        for (Object o : array) {
-            try {
-                JSONObject temp = (JSONObject) o;
-                OrderDetails value = new OrderDetails();
-                value.setCount((long) temp.get("count"));
-                value.setProductId((long) temp.get("productId"));
-                tempArray.add(value);
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-            }
-        }
-        setOrderDetails(tempArray);
-    }
-
     public boolean initInfoJSON(ArrayList<OrderDetails> orderDetails) {
         if (orderDetails == null) return false;
         if (orderDetails.size() < 1) return false;
@@ -135,30 +237,5 @@ public class Order {
         object.put("orderDetails", array);
         setInfoJSON(object.toJSONString());
         return true;
-    }
-
-    public static class OrderDetails {
-        private long count;
-        private long productId;
-
-        public OrderDetails() {}
-        public OrderDetails(int count, long productId) {
-            this.count = count;
-            this.productId = productId;
-        }
-
-        public long getCount() {
-            return count;
-        }
-        public void setCount(long count) {
-            this.count = count;
-        }
-
-        public long getProductId() {
-            return productId;
-        }
-        public void setProductId(long productId) {
-            this.productId = productId;
-        }
-    }
+    }*/
 }

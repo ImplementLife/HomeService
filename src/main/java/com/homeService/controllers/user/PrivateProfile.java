@@ -5,41 +5,34 @@ import com.homeService.entity.Product;
 import com.homeService.entity.User;
 import com.homeService.services.ProductService;
 import com.homeService.services.UserService;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 @Controller
 public class PrivateProfile {
-
-    @Autowired
-    private HeaderController headerController;
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private UserService userService;
+    @Autowired ProductService productService;
+    @Autowired UserService userService;
+    @Autowired private HeaderController headerController;
 
     @GetMapping("/privateProfile")
     public String getPrivateProfile(
-    @RequestParam String tab,
-    @RequestParam String productsCart,
-    @RequestParam String productsFavorite,
-    Principal principal,
-    Model model) throws Exception {
-        boolean isAdmin = false;
+        @RequestParam String tab,
+        @RequestParam String productsCart,
+        @RequestParam String productsFavorite,
+        Principal principal,
+        Model model
+    ) throws Exception {
+        headerController.init(model, principal);
         Collection<Product> favoriteProducts = new ArrayList<>();
         Collection<Product> cartProducts = new ArrayList<>();
 
@@ -53,31 +46,16 @@ public class PrivateProfile {
             ArrayList<Long> cart = new ArrayList<>();
             for (String str : productsCart.split("\\s")) cart.add(Long.parseLong(str.trim()));
             cartProducts.addAll(productService.findAllById(cart));
-            for (Product p : cartProducts) {
-                for (Product.OptPrice op : p.getOptPrices().values()) {
-                    if (op.getMinCount() == 1) finalPrice += op.getMoney();
-                }
-            }
+            for (Product p : cartProducts) finalPrice += Long.parseLong(p.getDefaultPrice());
         }
 
-        if (principal != null) {
-            User currentUser = (User) ((Authentication) principal).getPrincipal();
-            headerController.init(model, currentUser);
-            favoriteProducts = userService.getCartProducts(currentUser);
-            cartProducts = userService.getCartProducts(currentUser);
-            for (GrantedAuthority GA : currentUser.getAuthorities()) {
-                if (GA.getAuthority().equals("ROLE_ADMIN")) isAdmin = true;
-            }
-        }
         for (Product p : favoriteProducts) p.setFavorite(true);
-
-        model.addAttribute("isAdmin", isAdmin);
         model.addAttribute("finalPrice", finalPrice);
         model.addAttribute("tab", tab);
         model.addAttribute("favoriteProducts", favoriteProducts);
         model.addAttribute("cartProducts", cartProducts);
 
-        return "privateProfile/index";
+        return "viewData/privateProfile/index";
     }
 
 }

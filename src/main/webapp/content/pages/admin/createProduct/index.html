@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Home-Service - Создать Новый Товар</title>
+   <th:block th:insert="~{commons/head :: copy}"></th:block>
+
+   <link rel="stylesheet" href="/resources/com/css/tab.css">
+   <link rel="stylesheet" href="/resource/admin/createProduct/css/styles.css">
+</head>
+
+<body>
+   <th:block  th:insert="~{commons/header :: copy}"></th:block>
+   <main>
+      <div class="container">
+         <div class="mainContent">
+            <form th:action="'/admin/'+${action}+'Product'" enctype="multipart/form-data" method="post">
+               <input type="text" name="id" th:if="${action.equals('update')}" th:value="${product.id}" none>
+               <input type="text" name="referer" th:if="${action.equals('update')}" th:value="${referer}" none>
+               <div class="container pad">
+                  <div class="block mt">
+                     <div>Название и артикул</div>
+                     <div><input type="text" name="name"    placeholder="Название товара" th:value="${product.name}"    class="block mt" required></div>
+                     <div><input type="text" name="article" placeholder="Артикул"         th:value="${product.article}" class="block mt" required></div>
+                  </div>
+
+                  <div class="block mt">
+                     <div>Выбор категории</div>
+                     <select class="pad block mt" name="categoryId">
+                        <option th:if="${action.equals('create')}" selected> - Выберите Категорию - </option>
+                        <th:block th:each="cat : ${categories}">
+                           <option th:value="${cat.id}" th:selected="${product.categoryId == cat.id}">
+                              <th:block th:each="p : ${cat.path}"> > [[${p}]]</th:block>
+                           </option>
+                        </th:block>
+                     </select>
+                  </div>
+
+                  <div class="block mt" th:if="${action.equals('create')}">
+                     <div>Файлы фото:</div>
+                     <input type="file" name="images[]" multiple>
+                     <div th:if="${fileError != null}" th:text="${fileError}"></div>
+                  </div>
+
+                  <div class="block mt">
+                     <div>Описание</div>
+                     <div id="sample">
+                        <script type="text/javascript" src="/resources/com/js/htmlCreator.js"></script>
+                        <script type="text/javascript">bkLib.onDomLoaded(function(){nicEditors.allTextAreas();});</script>
+                        <textarea name="description" style="width: 100%;">[(${product.description})]</textarea>
+                     </div>
+                  </div>
+
+                  <div id="priceList" class="block mt">
+                     <div>Цены на товары</div>
+                     <div th:if="${priceWrong != null}">Какая-то ошибка в ценах: [[${priceWrong}}]]</div>
+                     <div class="prices">
+                        <div class="mt">
+                           Цена за единицу товара:
+                           <input class="block" type="tel" int="defaultPrice" th:value="${defaultPrice}" required> грн
+                        </div>
+                        <th:block th:each="p : ${prices}" th:if="${action.equals('update')}">
+                           <div class="mt" int="discount">
+                              Скидка при заказе от
+                              <input int="discountCount" class="block" type="tel" th:value="${p.count}" required> шт.
+                              <input int="discountValue" class="block" type="tel" th:value="${p.value}" required> %
+                           </div>
+                        </th:block>
+                        <th:block th:unless="${action.equals('update')}">
+                           <div class="mt" int="discount">
+                              Скидка при заказе от <input int="discountCount" class="block" type="tel" value="5" required> шт.
+                              <input int="discountValue" class="block" type="tel" value="3" required> %
+                           </div>
+                           <div class="mt" int="discount">
+                              Скидка при заказе от <input int="discountCount" class="block" type="tel" value="10" required> шт.
+                              <input int="discountValue" class="block" type="tel" value="5" required> %
+                           </div>
+                        </th:block>
+                     </div>
+                     <input id="priceListInput" type="text" name="priceList" none>
+                  </div>
+
+                  <div id="tableCharacteristics" class="block mt">
+                     <div>Таблица характеристик</div>
+                     <table th:if="${action.equals('create')}" class="mt">
+                        <tr>
+                           <td><div class="cell"></div></td>
+                           <td><div class="cell">
+                              <div class="button" tableInt="addNewCol"><img src="/resources/com/img/add-black-36dp.svg" alt="addNewRow"></div>
+                              <div class="button" tableInt="RemoveCol"><img src="/resources/com/img/delete-black-36dp.svg" alt="RemoveRow"></div>
+                           </div></td>
+                           <td><div class="cell">
+                              <div class="button" tableInt="addNewCol"><img src="/resources/com/img/add-black-36dp.svg" alt="addNewRow"></div>
+                              <div class="button" tableInt="RemoveCol"><img src="/resources/com/img/delete-black-36dp.svg" alt="RemoveRow"></div>
+                           </div></td>
+                           <td><div class="cell">
+                              <div class="button" tableInt="addNewCol"><img src="/resources/com/img/add-black-36dp.svg" alt="addCol"></div>
+                           </div></td>
+                        </tr>
+                        <tr>
+                           <td><div class="cell">
+                              <div class="button" tableInt="addNewRow"><img src="/resources/com/img/add-black-36dp.svg" alt="addNewRow"></div>
+                              <div class="button" tableInt="RemoveRow"><img src="/resources/com/img/delete-black-36dp.svg" alt="RemoveRow"></div>
+                           </div></td>
+                           <td><div class="cell"><input type="text" placeholder="-"></div></td>
+                           <td><div class="cell"><input type="text" placeholder="-"></div></td>
+                        </tr>
+                        <tr>
+                           <td><div class="cell">
+                              <div class="button" tableInt="addNewRow"><img src="/resources/com/img/add-black-36dp.svg" alt="addNewRow"></div>
+                              <div class="button" tableInt="RemoveRow"><img src="/resources/com/img/delete-black-36dp.svg" alt="RemoveRow"></div>
+                           </div></td>
+                           <td><div class="cell"><input type="text" placeholder="-"></div></td>
+                           <td><div class="cell"><input type="text" placeholder="-"></div></td>
+                        </tr>
+                        <tr>
+                           <td><div class="cell"><div class="button" tableInt="addNewRow"><img src="/resources/com/img/add-black-36dp.svg" alt="addRow"></div></div></td>
+                        </tr>
+                     </table>
+                     <table th:if="${action.equals('update')}" class="mt">
+                        <tr>
+                           <td><div class="cell"></div></td>
+                           <td th:each="r : ${table.get(0)}"><div class="cell">
+                              <div class="button" tableInt="addNewCol"><img src="/resources/com/img/add-black-36dp.svg" alt="addNewRow"></div>
+                              <div class="button" tableInt="RemoveCol"><img src="/resources/com/img/delete-black-36dp.svg" alt="RemoveRow"></div>
+                           </div></td>
+                           <td><div class="cell">
+                              <div class="button" tableInt="addNewCol"><img src="/resources/com/img/add-black-36dp.svg" alt="addCol"></div>
+                           </div></td>
+                        </tr>
+                        <tr th:each="r : ${table}">
+                           <td><div class="cell">
+                              <div class="button" tableInt="addNewRow"><img src="/resources/com/img/add-black-36dp.svg" alt="addNewRow"></div>
+                              <div class="button" tableInt="RemoveRow"><img src="/resources/com/img/delete-black-36dp.svg" alt="RemoveRow"></div>
+                           </div></td>
+                           <td th:each="d : ${r}"><div class="cell"><input type="text" th:value="${d}" placeholder="-"></div></td>
+                        </tr>
+                        <tr>
+                           <td><div class="cell"><div class="button" tableInt="addNewRow"><img src="/resources/com/img/add-black-36dp.svg" alt="addRow"></div></div></td>
+                        </tr>
+                     </table>
+                     <input id="characteristics" type="text" name="characteristics" none>
+                  </div>
+
+                  <div class="block mt">
+                     <div class="setIsPublic">
+                        <input id="isPublic" type="checkbox" name="isPublic" checked>
+                        <label for="isPublic">Опубликовать сразу? (Неопубликованные товары можно опубликовать позже)</label>
+                     </div>
+                     <button id="bCreate" class="block mt">Сохранить</button>
+                     <button id="bSubmit" type="submit" none></button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+   </main>
+   <th:block  th:insert="~{commons/footer :: copy}"></th:block>
+   <script type="text/javascript" src="/resources/com/js/tableCreator.js"></script>
+   <script type="text/javascript" src="/resources/com/js/create.js"></script>
+</body>
+</html>

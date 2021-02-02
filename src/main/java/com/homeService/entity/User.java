@@ -1,41 +1,46 @@
 package com.homeService.entity;
 
 import org.hibernate.annotations.Type;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User implements UserDetails, Comparable {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
      * Вместо username используется email
      */
-    private String username;
-    private String name;
-    private String password;
-    @Transient
-    private String passwordConfirm;
+    private String username; //Email
+    private String firstName;//Имя
+    private String lastName; //Фамилия
+    private String phone;    //Номер телефона
+    private String password; //Пароль
+    @Transient private String passwordConfirm;
     private boolean enabled;
     private boolean accountNonLocked;
 
     /**
      * example: ["1", "5", ...]
      */
-    @Type(type = "text")
-    private String idProductCartJSON;
+    @Type(type = "text") private String idProductCartJSON;
+    @Transient private ArrayList<Long> productsCart;
+
     /**
      * example: ["1", "5", ...]
      */
-    @Type(type = "text")
-    private String idProductFavoriteJSON;
+    @Type(type = "text") private String idProductFavoriteJSON;
+    @Transient private ArrayList<Long> productsFavorite;
 
     /*===================================*/
 
@@ -53,11 +58,25 @@ public class User implements UserDetails, Comparable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public void setPassword(String password) {
@@ -103,6 +122,25 @@ public class User implements UserDetails, Comparable {
         this.passwordConfirm = passwordConfirm;
     }
 
+    public ArrayList<Long> getProductsCart() {
+        if (productsCart == null) {
+            productsCart = new ArrayList<>();
+            try {
+                for (Object o : (JSONArray) new JSONParser().parse(idProductCartJSON)) productsCart.add(Long.parseLong(o.toString()));
+            } catch (ParseException e) {e.printStackTrace();}
+        }
+        return productsCart;
+    }
+    public ArrayList<Long> getProductsFavorite() {
+        if (productsFavorite == null) {
+            productsFavorite = new ArrayList<>();
+            try {
+                for (Object o : (JSONArray) new JSONParser().parse(idProductFavoriteJSON)) productsFavorite.add(Long.parseLong(o.toString()));
+            } catch (ParseException e) {e.printStackTrace();}
+        }
+        return productsFavorite;
+    }
+
     /*===================================*/
 
     @Override
@@ -117,7 +155,8 @@ public class User implements UserDetails, Comparable {
 
     @Override
     public String getUsername() {
-        return username;
+        if (username != null && !username.isEmpty()) return username;
+        else return phone;
     }
 
     @Override

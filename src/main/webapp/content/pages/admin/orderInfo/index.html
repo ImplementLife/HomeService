@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Home-Service - System Log</title>
+   <th:block th:insert="~{commons/head :: copy}"></th:block>
+   <link rel="stylesheet" href="/resource/admin/orderInfo/css/styles.css">
+</head>
+
+<body>
+   <th:block th:insert="~{commons/header :: copy}"></th:block>
+   <main>
+      <div class="container">
+         <div class="mainContent">
+
+            <div class="block mt f fJSB">
+               <div class="title nowrap">Заказ № [[${order.id}]]</div>
+               <a href="/admin/tableOrders?sortId=-2" class="goBack">Вернуться к <span class="nowrap">таблице заказов</span></a>
+            </div>
+
+            <div class="block mt">
+               <div class="title">Информация о клиенте:</div>
+               <div><span class="title">Имя: </span> [[${order.userData.firstName}]]</div>
+               <div><span class="title">Фамилия: </span> [[${order.userData.lastName}]]</div>
+               <div><span class="title">Номер телефона: </span> [[${order.userData.phone}]]</div>
+               <div><span class="title">Почта: </span> [[${order.userData.email}]]</div>
+
+               <div class="mt">
+                  <div class="title">Комментарий к заказу от клиента:</div>
+                  <div class="mt" th:text="${order.userComment}"></div>
+               </div>
+            </div>
+
+            <div class="block mt">
+               <div class="title">Список заказанных товаров:</div>
+               <div class="mt">
+                  <div class="block mt" th:each="details : ${order.orderDetails}">
+                     <div class="title">[[${details.productId}]]</div>
+                     <div class="title">Количество: [[${details.count}]] шт.</div>
+                  </div>
+               </div>
+            </div>
+
+            <div class="block mt">
+               <div class="title">Способ доставки:</div>
+               <div class="mt" th:text="${order.delivery.method}"></div>
+               <div class="mt" th:text="${order.delivery.address}"></div>
+
+               <div class="title mt">Способ оплаты:</div>
+               <div class="mt" th:text="${order.payMethod}"></div>
+            </div>
+
+            <div class="block mt">
+               <div class="title">Изменение статуса:</div>
+               <div>Текущий статус: [[${order.orderStatus.name}]]</div>
+               <form th:action="'/admin/updateOrder/' + ${order.id}" method="post">
+                  <select class="block mt" name="statusId" tabindex="4">
+                     <option value="-1" th:selected="${0 <= order.statusId}"> - Новый - </option>
+                     <th:block th:each="s : ${statuses}">
+                        <option th:value="${s.id}" th:text="${s.name}" th:selected="${s.id == order.statusId}"></option>
+                     </th:block>
+                  </select>
+                  <button type="submit" class="block mt">Применить</button>
+               </form>
+            </div>
+
+         </div>
+      </div>
+   </main>
+   <th:block th:insert="~{commons/footer :: copy}"></th:block>
+</body>
+</html>

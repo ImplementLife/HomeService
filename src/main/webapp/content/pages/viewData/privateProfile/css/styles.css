@@ -1,0 +1,48 @@
+.cart .img, .cart .img img {
+    width: 100px;
+    height: 100px;
+    margin-right:15px;
+}
+/*======================*/
+table {
+    height:100%;
+    width:100%;
+    text-align:center;
+}
+.TAL{text-align:left;}
+.finalInfo div {
+    padding: 18px 5px;
+    background-color:#c89866;
+}
+.to_trash{cursor: pointer;}
+.button {
+    text-align:center;
+    white-space:nowrap;
+    padding: 15px 30px;
+    background-color: #d52f2f;
+    color: #f9f8f2;
+    font-size: 24px;
+    cursor: pointer;
+    transition: background-color 0.15s linear;
+}
+.button:hover {background-color: #cea783;}
+.button:active {background-color: #a7876b;}
+
+.info a {color:#000;}
+.name {font-size: 18px;}
+.art{margin-top:10px;}
+.mt{margin-top:10px;}
+
+.f1 {
+    display:flex;
+    justify-content:space-between;
+}
+@media(max-width:550px) {
+    .f1{display:block;}
+    .cart .img, .cart .img img {
+        width: 60px;
+        height: 60px;
+        margin-right:7px;
+    }
+    .art{margin-top:5px;}
+}

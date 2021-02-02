@@ -1,0 +1,171 @@
+/*===   com   ===*/
+.mt {margin-top: 20px;}
+.block {
+    padding: 5px;
+    background-color: #fafafa;
+    border: 1px solid #d7d5d3;
+}
+/*===============*/
+h1 {
+	font-weight: bold;
+	color: #3f4754;
+	font-size: 30px;
+}
+.main__wrapper_PhotoPrice {
+	display: flex;
+	justify-content: space-between;
+	padding: 20px;
+}
+.main__wrapperPriceInfo {width: 50%; margin-left:20px;}
+.main__wrapperPhoto {width: 50%;}
+@media(max-width: 700px) {
+	.main__wrapper_PhotoPrice {display: block;}
+	.main__wrapperPriceInfo, .main__wrapperPhoto {width: 100%;margin-left:0;}
+}
+
+.button	{
+    transition: 200ms background-color;
+    width: 170px;
+    text-align: center;
+    font-size: 14px;
+	cursor: pointer;
+	display: block;
+	padding: 10px;
+	border: 2px solid #cb9978;
+	background-color: #ffd7bd;
+	white-space: nowrap;
+	box-shadow: 2px 3px 4px 0px #6a6664;
+}
+.button:hover {background-color: #c1d2c3;}
+.button:active {background-color: #98b39b;}
+
+/*===   favorite   ===*/
+.switch {display: block;}
+.switch input {display:none;}
+.switch span {
+	display: block;
+	height: 40px;
+	width: 40px;
+	cursor: pointer;
+	background-image: url('/resources/com/img/baseline-favorite_border-24px.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.switch input:checked + span {background-image: url('/resources/com/img/baseline-favorite-24px.svg');}
+/*=====================*/
+
+.quantity {
+	text-align: center;
+	font-size: 20px;
+}
+
+.main__wrapper > div {margin-top: 15px;}
+.main__wrapperPath{font-size: 18px;padding: 12px;}
+
+.main__optPrices {
+	display: flex
+	justify-content: center
+	white-space: nowrap;
+}
+.main__optPrices div {
+	display: inline-block;
+	line-height: 20px;
+	border: 1px solid #000;
+	background-color: #fff;
+	margin: 5px 10px 5px 0;
+	padding: 5px 20px;
+	text-align: center;
+}
+.main__PriceTitle {font-size: 24px;}
+.title {font-weight:bold;}
+.finalPriceBlock {margin-top:15px;}
+
+.mainArticle{color:#808080;}
+/*=========================*/
+.path a, .path {color:#939393;}
+.notLink {color:#000;}
+
+/*========================*/
+.admin {
+	background-color: #cb9978;
+	padding: 5px 10px;
+}
+
+button {background-color: inherit; border: none;}
+.imgProduct img {height:50px;}
+.control div, .control img {
+    width: 35px;
+    height: 35px;
+}
+.control {width: 170px;}
+.cp {cursor: pointer;}
+
+/*==================*/
+.info table {
+	font-size: 14px;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+.info td{padding:10px;border:1px solid #9b9b9b;}
+
+.info details {padding:10px;}
+.info details div {margin-top:10px;}
+.info summary {
+	cursor: pointer;
+	font-weight: 300;
+	font-size: 20px;
+	letter-spacing:2px;
+}
+.info p {
+	margin-top: 10px;
+	text-indent: 20px;
+	line-height:20px;
+	letter-spacing:1px;
+}
+
+/*=================*/
+.opt table {
+	width: 100%;
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+	font-size: 14px;
+	border-radius: 10px;
+	border-spacing: 0;
+	text-align: center;
+}
+.opt tr:first-child td {
+	font-weight: bold;
+	background: #cb9978;
+	color: white;
+	text-shadow: 0 1px 1px #2D2020;
+	padding: 10px 20px;
+}
+.opt tr:first-child, .opt td {
+	border-style: solid;
+	border-width: 0 1px 1px 0;
+	border-color: white;
+}
+.opt td {
+	padding: 10px 20px;
+	background: #fff2bf;
+}
+.opt tr td:last-child {border-right: none;}
+
+.info table {
+    overflow-wrap: anywhere;
+	width: 100%;
+  	overflow-x: auto;
+}
+/*==============================*/
+
+@media(max-width:550px) {
+    h1 {font-size:20px;}
+    .mainArticle{font-size:12px;}
+    .main__wrapper_PhotoPrice {padding:5px;}
+    .mt{margin-top:8px;}
+    .main__wrapperPath{font-size:14px;}
+    .main__PriceTitle{font-size:14px;}
+    .main__priceValue{font-size:12px;}
+    .admin{flex-direction: column;}
+    .info details {padding:4px;}
+}

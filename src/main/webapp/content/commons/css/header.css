@@ -1,0 +1,192 @@
+header {
+    position: fixed;
+	top: 0;
+    left: 0;
+    right: 0;
+	z-index: 30;
+	background-color: #cb9978;
+	width: 100%;
+}
+.wrapper__headerContent div, .wrapper__headerContent, .header__find-line form, .header__logo a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.wrapper__headerContent {height: 50px;}
+.wrapper__headerContent img {height: 40px;}
+
+/* === Menu head ===*/
+#menuToggle {display: none;}
+details .detailsContent {padding-left:22px;}
+.menuItem {font-size: 20px;}
+
+.catBlock, .catBlock a {color: #fafafa;}
+.catBlock {
+    display: block;
+    background-color: #cb9978;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 15px 7px;
+    margin-top: 5px;
+}
+
+.auth {margin:10px 0;text-align:center;}
+
+.pointer {cursor: pointer;}
+.menuHead {
+    font-size: 20px;
+    padding: 7px 7px;
+}
+.menuContent {
+    overflow-y:auto;
+    width: 100%;
+    height: 88%;
+}
+#menuToggle {display: none;}
+.catMenu {
+    position: fixed;
+    width: 320px;
+    min-width: 320px;
+    height: 100%;
+    top: 0;
+    height:100%;
+    left: -320px;
+    -webkit-transition: left 0.3s;
+    -moz-transition: left 0.3s;
+    transition: left 0.3s;
+    background: #f0f0f0;
+    z-index: 2000;
+    border-right: 1px solid #a8a4a3;
+    color: #fff;
+}
+.catBlock a{color:#fff;}
+.auth a, .auth{color:#565656;}
+#menuToggle:checked ~ .catMenu {left:0;}
+
+/* === Logo ===*/
+.header__logo_imgWrap img {height: 60px;}
+.header__logo_name {
+	color: #f3f3f3;
+    font-weight: bold;
+    font-style: italic;
+    font-family: impact;
+    font-size: 35px;
+    padding-left: 10px;
+}
+
+/* === Find Line === */
+.header__findLine form {display: flex;}
+.header__findLine input {
+    max-width: 250px;
+    height: 50px;
+    font-size: 30px;
+    padding: 14px;
+    padding-left: 20px;
+
+    border-right: 1px solid #000;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+.header__findLine button {
+    height: 50px;
+    padding: 0 10px;
+
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+
+    background-color: #fff;
+}
+.header__findLine_button:hover {background-color: #e3e3e3;}
+.header__findLine_button:active {background-color: #d4d4d4;}
+.header__button_popup {cursor: pointer;}
+.header__button_popup:hover {}
+.header__button_popup:active {}
+
+.header__overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    transition: opacity 700ms;
+    visibility: hidden;
+    opacity: 0;
+}
+.header__cancel {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+}
+.header__overlay:target {
+    visibility: visible;
+    opacity: 1;
+}
+
+.header__popup input {
+    margin-right: 15px;
+    width: 100%;
+    background-color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    color: rgb(51, 51, 51);
+    appearance: none;
+    box-shadow: none;
+    font-size: inherit;
+    padding: 5 30px 5px 0px;
+    font-size: 22px;
+    outline: none 0px;
+}
+.header__popup button {background-color: #fff;}
+.header__popup {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 50px;
+    padding: 5px 10px;
+    background: #fff;
+    border: 1px solid #666;
+    width: 100%;
+}
+.header__buttons div {margin-left: 20px;}
+
+.header__basked, .header__favorite {position: relative;}
+.header__basked .header__count,
+.header__favorite .header__count {
+    position: absolute;
+    display: block;
+    bottom: 0;
+    left: 0;
+    background-color: #f5c002;
+    border-radius: 7px;
+    color: #333;
+    font-size: 10px;
+    text-align: center;
+    line-height: normal;
+    width: 16px;height: 16px;
+    margin: 0;
+    padding: 3px;
+}
+/*===============*/
+/*@media(max-width:800px)*/
+.wrapper__headerContent img {height: 30px;}
+.header__logo_imgWrap img {height: 40px;}
+.header__findLine input {
+    height: 30px;
+    font-size: 20px;
+    max-width: 150px;
+}
+.header__findLine button {height: 30px;}
+/*=======================*/
+@media(max-width: 560px) {
+    .wrapper__headerContent img {height: 30px;}
+    .header__logo_name {font-size: 24px;}
+    .header__findLine input {
+        height: 30px;
+        font-size: 20px;
+        max-width: 150px;
+    }
+    .header__findLine button {height: 30px;}
+    .wrapper__headerContent {height: 50px;}
+    .wrapper__headerContent .header__findLine {display: none;}
+}

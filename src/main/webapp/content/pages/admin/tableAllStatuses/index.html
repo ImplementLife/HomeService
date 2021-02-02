@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Home-Service - Клиентаская база</title>
+	<th:block th:insert="~{commons/head :: copy}"></th:block>
+	<link rel="stylesheet" href="/resource/admin/tableAllStatuses/css/styles.css">
+</head>
+
+<body>
+	<th:block th:insert="~{commons/header :: copy}"></th:block>
+	<main>
+		<div class="container">
+			<div class="mainContent">
+				<div class="block mt">
+					<div class="title mt">Перечень статусов для Заказа</div>
+					<table>
+						<tr>
+							<td>id</td>
+							<td>Название</td>
+						</tr>
+						<tr th:each="status : ${statuses}">
+							<td>[[${status.id}]]</td>
+							<td>[[${status.name}]]</td>
+						</tr>
+					</table>
+				</div>
+				<div class="block mt">
+					<div class="title mt">Создать ещё один статус</div>
+					<form action="/admin/createOrderStatus" method="post">
+						<input class="block mt" type="text" name="name">
+						<button class="block mt" type="submit">Создать</button>
+						<div th:if="${errorName}">Поле не может быть пустым</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+	<th:block th:insert="~{commons/footer :: copy}"></th:block>
+</body>
+</html>

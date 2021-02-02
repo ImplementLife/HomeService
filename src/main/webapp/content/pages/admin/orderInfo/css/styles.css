@@ -1,0 +1,17 @@
+.mt {margin-top: 10px;}
+.block {
+    padding: 10px;
+    border: 1px solid #6f6da6;
+}
+
+.title {
+    font-weight:bold;
+    font-size:16px;
+
+}
+.nowrap{white-space: nowrap;}
+.goBack{text-align:right;}
+
+.textCenter {
+    text-align:center;
+}

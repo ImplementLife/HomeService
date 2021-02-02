@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Home-Service - Личный кабинет</title>
+   <th:block th:insert="~{commons/head :: copy}"></th:block>
+   <link rel="stylesheet" href="/resources/com/css/slider.css">
+   <link rel="stylesheet" href="/resources/com/css/tab.css">
+   <link rel="stylesheet" href="/resources/com/css/quantity.css">
+   <link rel="stylesheet" href="/resources/com/css/productMin.css">
+
+   <link rel="stylesheet" href="/resource/viewData/privateProfile/css/styles.css">
+</head>
+
+<body>
+   <th:block  th:insert="~{commons/header :: copy}"></th:block>
+   <main>
+      <div class="container">
+         <div class="mainContent">
+            <div class="tabs">
+               <input type="radio" name="tab-btn" id="tab-btn-1" th:checked="${tab == 'favorite'}">
+               <label for="tab-btn-1">
+                  <img src="/resources/com/img/baseline-favorite_border-24px.svg" alt="">
+                  <span>Избранное</span>
+               </label>
+               <input type="radio" name="tab-btn" id="tab-btn-2" th:checked="${tab == 'cart'}">
+               <label for="tab-btn-2">
+                  <img src="/resources/com/img/outline-shopping_cart-24px.svg" alt="">
+                  <span>Корзина</span>
+               </label>
+
+               <div id="content-1">
+                  <div class="products pm">
+                     <th:block th:each="product : ${favoriteProducts}">
+                        <th:block th:insert="~{commons/productMin :: product}"></th:block>
+                     </th:block>
+                  </div>
+                  <div th:if="${favoriteProducts.size() == 0}">
+                     <div>В избранном ничего нет</div>
+                     <a href="/">посмотреть товары</a>
+                  </div>
+               </div>
+               <div id="content-2">
+                  <div class="cart">
+                     <table>
+                        <tr>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                           <td></td>
+                        </tr>
+                        <th:block th:each="product : ${cartProducts}">
+                           <tr int="product" th:attr="product_id=${product.id}">
+                              <td>
+                                 <div class="f">
+                                    <div class="img">
+                                       <img th:src="'/ProductImages/' + ${product.mainImg}" alt="Фото">
+                                    </div>
+                                    <div class="TAL">
+                                       <a th:href="'/product/' + ${product.id}" th:text="${product.name}" class="name cb"></a>
+                                       <div class="art">Артикул: [[${product.article}]]</div>
+                                       <div class="art">Цена за шт: <span>[[${product.defaultPrice}]]</span> грн</div>
+                                    </div>
+                                 </div>
+                              </td>
+                              <td>
+                                 <div class="quantity">
+                                    <span  int="quantitySub"   class="minus">-</span>
+                                    <input int="quantityCount" type="text" name="count" size="2" value="1">
+                                    <span  int="quantityAdd"   class="plus">+</span>
+                                 </div>
+                              </td>
+                              <td>
+                                 <div><span int="finalPrice">[[${product.defaultPrice}]]</span> грн</div>
+                              </td>
+                              <td>
+                                 <div class="">
+                                    <span int="buttonToTrash" class="to_trash">
+                                    <img src="/resources/com/img/baseline-delete_outline-24px.svg" alt="убрать из корзины">
+                                 </span>
+                                 </div>
+                              </td>
+                              <!--<td>
+                                 <div int="eco" th:attr="idProduct=${product.id}" class="f fJSB fAIC">
+                                    <div class="optCount">
+                                       <div>При заказе от <span int="ecoCount" th:attr="idProduct=${product.id}"></span> шт</div>
+                                       <div>Экономия      <span int="ecoPrice" th:attr="idProduct=${product.id}"></span> грн</div>
+                                    </div>
+                                    <span int="buttonAdd" th:attr="idProduct=${product.id}" class="add">Добавить</span>
+                                 </div>
+                              </td>-->
+                           </tr>
+                        </th:block>
+                     </table>
+
+                     <div class="fullFinalPrice mt">
+                        <div th:if="${cartProducts.size() > 0}" class="f1">
+                           <table class="finalInfo">
+                              <td><div>К оплате: <span id="lastFullPrice">[[${finalPrice}]]</span> грн</div></td>
+                              <!--<td><div>Всего сэкономлено: <span id="lastFullEco">0</span> грн</div></td>-->
+                           </table>
+                           <div class="f fJC"><span id="buttonCreateOrder" class="final button">Оформить заказ</span></div>
+                           <form action="/newOrder" method="get" none>
+                              <input id="productsJSON" type="text" name="productsJSON">
+                              <button id="submitButton" type="submit"></button>
+                           </form>
+                        </div>
+                        <div th:unless="${cartProducts.size() > 0}">
+                           <div>В корзине пусто</div>
+                           <a href="/">К покупкам</a>
+                        </div>
+                     </div>
+
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </main>
+   <th:block  th:insert="~{commons/footer :: copy}"></th:block>
+   <script type="text/javascript" src="/resources/com/js/interactiveCart.js"></script>
+</body>
+</html>

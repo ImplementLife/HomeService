@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Home-Service - Панель администратора</title>
+	<th:block th:insert="~{commons/head :: copy}"></th:block>
+	<script type="text/javascript" src="/resources/com/js/xhr.js"></script>
+	<link rel="stylesheet" href="/resource/admin/tableAllProducts/css/styles.css">
+</head>
+
+<body>
+	<th:block th:insert="~{commons/header :: copy}"></th:block>
+
+	<main>
+		<div class="container">
+			<div class="mainContent">
+				<div class="title">Поиск и сортировка по артикулу</div>
+				<div class="f fJC search">
+					<form action="/admin/searchProductByArticle" method="get">
+						<input  class="block" type="text" name="article" th:value="${article}" autocomplete="off">
+						<button class="block" type="submit">Поиск</button>
+					</form>
+				</div>
+				<div class="mt">
+					<table>
+						<tbody>
+						<tr>
+							<td>Название</td>
+							<td>Артикул</td>
+							<td>Фото</td>
+							<td><div class="f fJSA fAC control">Администрирование</div></td>
+						</tr>
+						<tr th:each="product : ${products}">
+							<td><a th:href="'/product/'+${product.id}">[[${product.name}]]</a></td>
+							<td>[[${product.article}]]</td>
+							<td class="imgProduct"><img th:src="'/ProductImages/' + ${product.mainImg}" alt="Фото"></td>
+							<td>
+								<div class="f fJSA fAC control">
+									<div class="cp">
+										<a th:href="'/admin/deleteProduct/'+${product.id}" onClick="return window.confirm('Подтвердите удаление');">
+											<img src="/resources/com/img/baseline-delete_outline-24px.svg" alt="удалить">
+										</a>
+									</div>
+									<div class="cp">
+										<a th:href="'/admin/updateProduct/'+${product.id}">
+											<img src="/resources/com/img/create-black-24dp.svg" alt="изменить">
+										</a>
+									</div>
+									<div>
+										<form th:action="'/admin/updateVis/'+${product.id}" method="post">
+											<input type="text" name="vis" th:value="${!product.isPublic()}" none>
+											<button type="submit"><img th:src="${product.isPublic()} ? '/resources/com/img/visibility_off-black-24dp.svg' : '/resources/com/img/visibility-black-24dp.svg'" alt=""></button>
+										</form>
+									</div>
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<!--
+				<div class="mt" th:if="${pages.length > 1}">
+					<form action="/admin/allProducts" method="get">
+						<select class="block mt" name="page" tabindex="4">
+							<th:block th:each="p : ${pages}">
+								<option th:value="${p}" th:selected="${p == currentPage}">Страница № [[${p}]]</option>
+							</th:block>
+						</select>
+						<button class="block mt">Перейти</button>
+					</form>
+				</div>
+				-->
+			</div>
+		</div>
+	</main>
+	<th:block th:insert="~{commons/footer :: copy}"></th:block>
+</body>
+</html>

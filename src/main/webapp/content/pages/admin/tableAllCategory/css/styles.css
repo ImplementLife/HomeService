@@ -1,0 +1,11 @@
+table {
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+tr,td{padding:10px;border:1px solid #9b9b9b;}
+
+table img {
+    width: 60px;
+    object-fit: cover;
+}

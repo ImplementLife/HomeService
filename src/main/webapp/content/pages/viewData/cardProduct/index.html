@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Home-Service - [[${product.name}]]</title>
+	<th:block th:insert="~{commons/head :: copy}"></th:block>
+	<link rel="stylesheet" href="/resources/com/css/slider.css">
+	<link rel="stylesheet" href="/resources/com/css/tab.css">
+	<link rel="stylesheet" href="/resources/com/css/quantity.css">
+	<link rel="stylesheet" href="/resource/viewData/cardProduct/css/styles.css">
+</head>
+
+<body>
+	<th:block th:insert="~{commons/header :: copy}"></th:block>
+	<main>
+		<div class="container">
+			<div class="mainContent">
+
+				<div class="main__wrapperPath block">
+					<th:block th:insert="~{commons/path :: path}"></th:block>
+				</div>
+				<!-- for Admin -->
+				<div class="block mt admin f fJSB fAC">
+					<div>Администрирование</div>
+					<div class="f fJSA fAC control">
+						<div class="cp">
+							<a th:href="'/admin/deleteProduct/'+${product.id}" onClick="return window.confirm('Подтвердите удаление');">
+								<img src="/resources/com/img/baseline-delete_outline-24px.svg" alt="удалить">
+							</a>
+						</div>
+						<div class="cp">
+							<a th:href="'/admin/updateProduct/'+${product.id}">
+								<img src="/resources/com/img/create-black-24dp.svg" alt="изменить">
+							</a>
+						</div>
+						<div>
+							<form th:action="'/admin/updateVis/'+${product.id}" method="post">
+								<input type="text" name="vis" th:value="${!product.isPublic()}" none>
+								<button type="submit"><img th:src="${product.isPublic()} ? '/resources/com/img/visibility_off-black-24dp.svg' : '/resources/com/img/visibility-black-24dp.svg'" alt=""></button>
+							</form>
+						</div>
+					</div>
+				</div>
+
+				<div class="main__wrapper_PhotoPrice block mt" int="product" th:attr="product_id=${product.id}">
+
+					<div class="main__wrapperPhoto">
+						<div class="sim-slider">
+							<div class="sim-slider-list">
+								<div class="sizePhoto"></div>
+								<div th:if="${product.images.size() == 0}">No Image</div>
+								<th:block th:each="img : ${product.images}">
+									<div class="sim-slider-element"><img th:src="'/ProductImages/' + ${img}" alt="Фото товара"></div>
+								</th:block>
+							</div>
+							<div class="sim-slider-arrow-left"></div>
+							<div class="sim-slider-arrow-right"></div>
+							<div class="sim-slider-dots"></div>
+						</div>
+					</div>
+
+					<div class="main__wrapperPriceInfo">
+						<div class="main__nameProduct f fJSB fAC">
+							<h1 th:text="${product.name}"></h1>
+							<label class="switch roundButton">
+								<input type="checkbox" int="buttonFavorite" th:checked="${product.isFavorite()}">
+								<span></span>
+							</label>
+						</div>
+						<div class="mainArticle">Артикул: <span th:text="${product.article}"></span></div>
+						<div class="main__wrapperPrices f fJSB fAC mt">
+							<div>
+								<span class="main__PriceTitle">Цена: </span><span class="main__priceValue">[[${product.defaultPrice}]] грн</span>
+							</div>
+							<div>
+								<label>
+									<input none type="checkbox" int="buttonCart" th:checked="${product.isInCart()}">
+									<span id="cartText" class="button" th:text="${product.isInCart()} ? 'Убрать из корзины' : 'Добавить в корзину'"></span>
+								</label>
+							</div>
+						</div>
+
+						<div class="main__wrapperPrice_buttons mt">
+							<form action="/newOrderSingle" method="get">
+								<div class="f fJSB fAC">
+									<div class="quantity">
+										<span  int="quantitySub"   th:attr="idProduct=${product.id}" class="minus f fJC fAC">-</span>
+										<input int="quantityCount" th:attr="idProduct=${product.id}" type="text" name="count" size="2" value="1">
+										<span  int="quantityAdd"   th:attr="idProduct=${product.id}" class="plus f fJC fAC">+</span>
+									</div>
+									<input name="id" type="text" th:value="${product.id}" none>
+									<button class="button" type="submit">Купить в один клик</button>
+								</div>
+								<div class="mt opt">
+									<div class="title">Оптовые скидки:</div>
+									<table class="mt">
+										<tr>
+											<td>Количество</td>
+											<td>Скидка</td>
+										</tr>
+										<tr th:each="e : ${product.optPrices.values()}">
+											<td>От [[${e.minCount}]] шт</td>
+											<td>[[${e.percent}]] %</td>
+										</tr>
+									</table>
+								</div>
+								<div class="finalPriceBlock mt"><span class="title">Итоговая цена: </span><span int="finalPrice" th:text="${product.defaultPrice}"></span> грн</div>
+							</form>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="block mt info">
+					<details class="block" open="">
+						<summary>Описание</summary>
+						<div>
+							<p>
+								[(${product.description})]
+							</p>
+						</div>
+					</details>
+					<details class="block mt" open="">
+						<summary>Характеристики</summary>
+						<div>
+							<table border="1" cellpadding="30px">
+								<tr th:each="tr : ${characteristics}">
+									<td th:each="td : ${tr}">[[${td}]]</td>
+								</tr>
+							</table>
+						</div>
+					</details>
+					<details class="block mt">
+						<summary>Доставка / Оплата</summary>
+						<div>
+							<p>
+								Доставка за счёт покупателя по тарифам службы доставки, сбор и комплектация заказа от трёх до пяти дней с момента подтверждения и оплаты плюс пересылка.
+							</p>
+							<p>
+								Наложеный платёж недоступен по причине участившихся случаев не забранных с почты посылок!
+							</p>
+							<p>
+								Если вам очень нужен именно наложенный платёж, то мы можем отправить вам заказ с частичной предоплатой в размере 50% от суммы заказа, на не менее 100 гривен.
+							</p>
+							<p>
+								В случае если вы по каким либо причинам не забрали посылку, предоплата не возвращается покроет наши расходы на пересылку посылки в оба конца.
+							</p>
+						</div>
+					</details>
+				</div>
+
+			</div>
+		</div>
+	</main>
+	<th:block th:insert="~{commons/footer :: copy}"></th:block>
+	<script type="text/javascript" src="/resources/com/js/interactiveCart.js"></script>
+	<script type="text/javascript" src="/resources/com/js/slider.js"></script>
+</body>
+</html>

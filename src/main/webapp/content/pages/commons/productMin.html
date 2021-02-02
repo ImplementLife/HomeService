@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+   <div class="product" th:fragment="product" int="product" th:attr="product_id=${product.id}">
+      <a th:href="'/product/' + ${product.id}">
+         <div class="img s1x1">
+            <img th:src="'/ProductImages/' + ${product.mainImg}" alt="Фото">
+            <div class="wrapButtons">
+               <label class="switch roundButton">
+                  <input type="checkbox" int="buttonFavorite" th:checked="${product.isFavorite()}">
+                  <span></span>
+               </label>
+            </div>
+         </div>
+         <div class="name" th:text="${product.name}"></div>
+         <div class="article" >Артикул: <span th:text="${product.article}"></span></div>
+         <div class="price">[[${product.defaultPrice}]] грн</div>
+      </a>
+   </div>
+</body>
+</html>
+

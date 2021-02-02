@@ -19,8 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    UserService userService;
+    @Autowired private UserService userService;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -40,13 +39,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //Доступ разрешен всем пользователям
                 .antMatchers("/**", "/main/**").permitAll()
+                .anyRequest().authenticated() //Все остальные страницы требуют аутентификации
+
+
+        /*;https.csrf().disable().authorizeRequests() //Блок для разработки*/
+                //Доступ разрешен всем пользователям
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated(); //Все остальные страницы требуют аутентификации
 
+        //////////////////////////
         https.formLogin()
                 .permitAll() // даем доступ к форме логина всем
                 .loginPage("/login") // указываем страницу с формой логина
                 .loginProcessingUrl("/j_spring_security_check") // указываем action с формы логина
                 .failureUrl("/login?error") // указываем URL при неудачном логине
+
+                //.defaultSuccessUrl("/", true)
+                //Путь при удачной аутентификации и возможно возврат на предыдущую страницу
 
                 .usernameParameter("j_username") // Указываем параметры логина и пароля с формы логина
                 .passwordParameter("j_password");
@@ -57,6 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/login?logout")// указываем URL при удачном логауте
                 .invalidateHttpSession(true); // делаем не валидной текущую сессию
     }
+
+
 
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {

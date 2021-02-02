@@ -1,0 +1,124 @@
+.prod {
+    display:flex;
+    justify-content:flex-start;
+    padding: 10px;
+    border-top: #b1adad solid 1px;
+    border-left: #b1adad solid 1px;
+    border-right: #b1adad solid 1px;
+    background-color:#f6f6f6;
+}
+.blockContent .prod:last-child {border: #b1adad solid 1px;}
+/*===========================*/
+.in {width:100%;}
+
+.myForm input, .myForm textarea, select {
+    border: #b1adad solid 1px;
+    padding:10px;
+    margin-top: 10px;
+    background-color:#f6f6f6;
+}
+.myForm textarea {
+    resize: none;
+    height: 120px;
+}
+.myForm button {
+	padding: 15px 30px;
+	background-color:#d52f2f;
+	color:#f9f8f2;
+	font-size:24px;
+}
+.myForm button:hover {background-color:#a91a1a;}
+.myForm, input, textarea {font-size:18px;}
+.myForm input[err], .myForm textarea[err] {border: #ff0000 solid 2px;}
+/*============================*/
+.block {
+    margin-top: 20px;
+    background-color:#faf6f2;
+    border-bottom: 2px solid #c7c7c7;
+}
+.blockTitle {
+    text-transform:uppercase;
+    background-color: #cb9978;
+    color: #fafafa;
+    font-weight:bold;
+    font-size: 20px;
+    padding: 18px;
+    border-bottom: 2px solid #b4b2b2;
+}
+.blockContent {padding: 20px;}
+/*===============================*/
+.mt {margin-top: 10px;}
+.prompt {
+    background-color: #f2e8df;
+    font-size: 14px;
+    line-height: 22px;
+}
+.promptImg {
+    background-color: #cb9978;
+    padding: 10px;
+}
+.promptContent {
+    font-size: 14px;
+    padding: 15px;
+}
+/*   delivery   */
+.delBlock {width:48%;}
+.delBlock table {
+    width:100%;
+    text-align:center;
+    border-collapse:collapse;
+}
+.delBlock table tr, .delBlock table td {border: 1px solid #b9b9b9;}
+.delBlock table td:first-child {
+    background-color:#fee0cc;
+    width:35px;
+    height:60px;
+}
+.delImg img {height: 40px;}
+
+/*   otherPeople   */
+.otherPeople {padding-top:0;}
+.otherPeopleData {display:none;}
+#otherPeople:checked~.otherPeopleData{display:block;}
+/**/
+.deliveryAddressTitle {
+    font-weight:bold;
+    font-size:16px;
+    color:#000;
+}
+.deliveryAddressContent div{
+    display:flex;
+    align-items:center;
+}
+.deliveryAddressContent input{width:400px;}
+.deliveryAddress span {width:150px;}
+.findPostOffice {
+    font-size: 14px;
+    text-decoration: revert;
+    color: #666565;
+}
+@media(max-width: 700px) {
+    .delBlock{width:100%;}
+    .delBlock:last-child{margin-top:10px;}
+    .delivery {display:block;}
+    .deliveryAddressContent div{display:block;}
+    .deliveryAddressContent input{display:block;width:100%;}
+    .deliveryAddressContent span{display:block;margin-top:10px;}
+}
+
+/*=============*/
+.titleAuth {
+    text-transform:uppercase;
+    font-weight:bold;
+    font-size:16px;
+    margin: 10px 0;
+}
+.buttonAuth div a {color:#fff;}
+.buttonAuth div {
+    text-transform:uppercase;
+    font-weight:bold;
+    font-size:16px;
+    padding:10px 15px;
+    background-color:#cb9978;
+    border-radius:10px;
+}

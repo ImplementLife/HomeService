@@ -5,16 +5,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "order_status")
 public class OrderStatus {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
     public OrderStatus() {}
-
-    public OrderStatus(long id, String name) {
-        this.id = id;
+    public OrderStatus(String name) {
         this.name = name;
     }
 
